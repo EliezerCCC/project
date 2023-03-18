@@ -3,7 +3,7 @@
     <HeaderTop></HeaderTop>
 
     <h1 class="header">公告栏</h1>
-
+    <el-button style="margin-left: 1300px">发布公告</el-button>
     <div class="notice_body">
       <el-table :data="notices" style="width: 100%">
         <el-table-column prop="title" label="主题" width="600">
@@ -59,12 +59,6 @@ export default {
     OneNotice(notice) {
       this.$alert(notice.content, notice.title, {
         confirmButtonText: "确定",
-        callback: (action) => {
-          this.$message({
-            type: "info",
-            message: `action: ${action}`,
-          });
-        },
       });
     },
   },
