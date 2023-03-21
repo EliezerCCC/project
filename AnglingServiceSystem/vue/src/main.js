@@ -8,7 +8,9 @@ import VueAxios from "vue-axios";
 import App from "./App.vue";
 import HeaderTop from "./components/HeaderTop.vue";
 import router from "./router";
+import global from "./global/global.vue";
 
+Vue.prototype.global = global;
 Vue.prototype.$echarts = echarts;
 Vue.use(ElementUI);
 Vue.use(VueAxios, axios);
