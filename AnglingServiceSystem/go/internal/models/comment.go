@@ -6,5 +6,5 @@ import "time"
 type Comment struct {
 	ID         int64     `json:"id"`
 	PostID     int64     `json:"post_id"`
-	createTime time.Time `json:"create_time" gorm:"column:create_time"`
+	CreateTime time.Time `json:"create_time" gorm:"column:create_time"`
 }

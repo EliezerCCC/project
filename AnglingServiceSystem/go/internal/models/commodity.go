@@ -12,5 +12,5 @@ type Commodity struct {
 	Status       string    `json:"status" gorm:"column:status"`
 	SellerID     string    `json:"seller_id" gorm:"column:seller_id"`
 	SellerName   string    `json:"seller_name" gorm:"column:seller_name"`
-	createTime   time.Time `json:"create_time" gorm:"column:create_time"`
+	CreateTime   time.Time `json:"create_time" gorm:"column:create_time"`
 }

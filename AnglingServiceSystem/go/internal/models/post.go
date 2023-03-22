@@ -8,5 +8,5 @@ type Post struct {
 	Title      string    `json:"title" gorm:"column:title"`
 	Content    string    `json:"content" gorm:"column:content"`
 	Author     string    `json:"author" gorm:"column:author"`
-	createTime time.Time `json:"create_time" gorm:"column:create_time"`
+	CreateTime time.Time `json:"create_time" gorm:"column:create_time"`
 }

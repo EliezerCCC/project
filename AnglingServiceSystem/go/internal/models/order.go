@@ -9,5 +9,5 @@ type Order struct {
 	SellerID    string    `json:"seller_id"`
 	CommodityID int64     `json:"commodity_id"`
 	Price       float64   `json:"price"`
-	createTime  time.Time `json:"create_time" gorm:"column:create_time"`
+	CreateTime  time.Time `json:"create_time" gorm:"column:create_time"`
 }

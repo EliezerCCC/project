@@ -105,9 +105,9 @@ export default {
         id: [
           { required: true, message: "请输入账号", trigger: "blur" },
           {
-            min: 6,
+            min: 5,
             max: 11,
-            message: "长度在 6 到 11 个字符",
+            message: "长度在 5 到 11 个字符",
             trigger: "blur",
           },
         ],
@@ -125,9 +125,9 @@ export default {
         id: [
           { required: true, message: "请输入账号", trigger: "blur" },
           {
-            min: 6,
+            min: 5,
             max: 11,
-            message: "长度在 6 到 11 个字符",
+            message: "长度在 5 到 11 个字符",
             trigger: "blur",
           },
         ],
@@ -175,6 +175,7 @@ export default {
               } else {
                 alert("登录成功!");
                 sessionStorage.setItem("token", res.data.token);
+                sessionStorage.setItem("identity", res.data.identity);
                 this.$router.push("/home");
               }
             })

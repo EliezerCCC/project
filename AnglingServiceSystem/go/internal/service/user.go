@@ -15,7 +15,7 @@ func Login(c *gin.Context) {
 
 	fmt.Println("用户登录:", user)
 
-	result, err := dao.Login(user)
+	identity, result, err := dao.Login(user)
 
 	//生成token
 	token, err := middleware.GenToken(user)
@@ -26,8 +26,9 @@ func Login(c *gin.Context) {
 	} else if result == "登录成功" {
 		fmt.Println("登录成功！")
 		c.JSON(200, gin.H{
-			"result": result,
-			"token":  token,
+			"result":   result,
+			"identity": identity,
+			"token":    token,
 		})
 	} else {
 		fmt.Println("登录失败！")

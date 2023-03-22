@@ -9,5 +9,5 @@ type Info struct {
 	Content    string    `json:"content" gorm:"column:content"`
 	Image      string    `json:"image" gorm:"column:image"`
 	Type       string    `json:"type" gorm:"column:type"`
-	createTime time.Time `json:"create_time" gorm:"column:create_time"`
+	CreateTime time.Time `json:"create_time" gorm:"column:create_time"`
 }

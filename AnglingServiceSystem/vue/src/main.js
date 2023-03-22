@@ -7,8 +7,10 @@ import Vue from "vue";
 import VueAxios from "vue-axios";
 import App from "./App.vue";
 import HeaderTop from "./components/HeaderTop.vue";
-import router from "./router";
+import LeftManager from "./components/Left.vue";
+import QuillEditor from "./components/QuillEditor.vue";
 import global from "./global/global.vue";
+import router from "./router";
 
 Vue.prototype.global = global;
 Vue.prototype.$echarts = echarts;
@@ -16,6 +18,8 @@ Vue.use(ElementUI);
 Vue.use(VueAxios, axios);
 Vue.config.productionTip = false;
 Vue.component("HeaderTop", HeaderTop);
+Vue.component("LeftManager", LeftManager);
+Vue.component("QuillEditor", QuillEditor);
 
 new Vue({
   router,

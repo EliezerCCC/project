@@ -7,5 +7,5 @@ type AnglingSite struct {
 	ID         int64     `json:"id"`
 	Name       string    `json:"name"`
 	Place      string    `json:"place"`
-	createTime time.Time `json:"create_time" gorm:"column:create_time"`
+	CreateTime time.Time `json:"create_time" gorm:"column:create_time"`
 }

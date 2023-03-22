@@ -28,12 +28,20 @@
       <el-menu-item index="7" @click="ToMap()">地图</el-menu-item>
       <el-menu-item index="8" @click="ToChatRoom()">聊天室</el-menu-item>
       <el-menu-item index="9" @click="ToPerson()">个人信息</el-menu-item>
+      <el-menu-item index="10" @click="ToNoticeManager()" v-if="vis"
+        >管理界面</el-menu-item
+      >
     </el-menu>
   </div>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      vis: false,
+    };
+  },
   methods: {
     ToAll() {
       this.$router.push("/");
@@ -65,6 +73,14 @@ export default {
     ToPerson() {
       this.$router.push("/person");
     },
+    ToNoticeManager() {
+      this.$router.push("/noticemanager");
+    },
+  },
+  created: function () {
+    if (sessionStorage.getItem("identity") == "administrator") {
+      this.vis = true;
+    }
   },
 };
 </script>
