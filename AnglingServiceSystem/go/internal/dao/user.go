@@ -33,3 +33,21 @@ func Register(user models.User) (result string, err error) {
 
 	return
 }
+
+// GetAllUser 所有用户信息
+func GetAllUser() (userList []models.User, err error) {
+	err = util.MysqlDB.Find(&userList).Error
+	return
+}
+
+// UpdateUser 修改用户信息
+func UpdateUser(user models.User) (err error) {
+	err = util.MysqlDB.Where("Id = ?", user.ID).Omit("id").Save(&user).Error
+	return
+}
+
+// GetOneUser 获取一个用户信息
+func GetOneUser(userID string) (user *models.User, err error) {
+	err = util.MysqlDB.Where("Id = ?", userID).First(&user).Error
+	return
+}

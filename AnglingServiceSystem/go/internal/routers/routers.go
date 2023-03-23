@@ -18,6 +18,13 @@ func SetupRouter() *gin.Engine {
 	//用户注册
 	r.POST("/register", service.Register)
 
+	//获取所有用户信息
+	r.GET("/getAllUser", middleware.JWTAuthMiddleware(), service.GetAllUser)
+	//获取某个用户信息
+	r.POST("/getOneUser", middleware.JWTAuthMiddleware(), service.GetOneUser)
+	//修改某个用户信息
+	r.POST("/updateUser", middleware.JWTAuthMiddleware(), service.UpdateUser)
+
 	//发布公告
 	r.POST("/addNotice", middleware.JWTAuthMiddleware(), service.AddNotice)
 	//获取所有公告
@@ -61,6 +68,17 @@ func SetupRouter() *gin.Engine {
 	r.POST("/updateAnglingSite", middleware.JWTAuthMiddleware(), service.UpdateAnglingSite)
 	//删除钓场
 	r.POST("/deleteAnglingSite", middleware.JWTAuthMiddleware(), service.DeleteAnglingSite)
+
+	//添加推荐
+	r.POST("/addRecommend", middleware.JWTAuthMiddleware(), service.AddRecommend)
+	//获取所有推荐
+	r.GET("/getAllRecommend", middleware.JWTAuthMiddleware(), service.GetAllRecommend)
+	//获取某推荐
+	r.POST("/getOneRecommend", middleware.JWTAuthMiddleware(), service.GetOneRecommend)
+	//修改某推荐
+	r.POST("/updateRecommend", middleware.JWTAuthMiddleware(), service.UpdateRecommend)
+	//删除推荐
+	r.POST("/deleteRecommend", middleware.JWTAuthMiddleware(), service.DeleteRecommend)
 
 	//上传图片
 	r.POST("/upload", service.Upload)

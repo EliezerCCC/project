@@ -204,6 +204,7 @@
 
 <script>
 export default {
+  inject: ["reload"],
   data() {
     return {
       imageUrl: "",
@@ -215,28 +216,19 @@ export default {
       anglingSite: {
         name: "",
         introduction: "",
-        amount: 0,
-        price: 0.0,
-        type: "",
-        status: "",
+        address: "",
       },
       editAnglingSite: {
         id: "",
         name: "",
         introduction: "",
-        amount: 0,
-        price: 0.0,
-        type: "",
-        status: "",
+        address: "",
       },
       detailedAnglingSite: {
         id: "",
         name: "",
         introduction: "",
-        amount: 0,
-        price: 0.0,
-        type: "",
-        status: "",
+        address: "",
       },
       deleteAnglingSite: {
         id: "",
@@ -313,6 +305,7 @@ export default {
             this.$router.push("/");
           } else {
             sessionStorage.setItem("token", res.data.token);
+            this.reload();
             alert("发布成功!");
             (this.AddAnglingSiteVisible = false),
               (this.anglingSite.name = ""),
@@ -350,6 +343,7 @@ export default {
             this.$router.push("/");
           } else {
             sessionStorage.setItem("token", res.data.token);
+            this.reload();
             alert("修改成功!");
             (this.EditAnglingSiteVisible = false),
               (this.editAnglingSite.name = ""),
@@ -382,6 +376,7 @@ export default {
             this.$router.push("/");
           } else {
             sessionStorage.setItem("token", res.data.token);
+            this.reload();
             alert("删除成功!");
             (this.DeleteAnglingSiteVisible = false),
               (this.deleteAnglingSite.id = "");

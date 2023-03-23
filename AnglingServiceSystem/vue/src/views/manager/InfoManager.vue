@@ -178,6 +178,7 @@
 
 <script>
 export default {
+  inject: ["reload"],
   data() {
     return {
       imageUrl: "",
@@ -289,6 +290,7 @@ export default {
               this.$router.push("/");
             } else {
               sessionStorage.setItem("token", res.data.token);
+              this.reload();
               alert("发布成功!");
               (this.AddInfoVisible = false),
                 (this.info.title = ""),
@@ -324,6 +326,7 @@ export default {
               this.$router.push("/");
             } else {
               sessionStorage.setItem("token", res.data.token);
+              this.reload();
               alert("修改成功!");
               (this.EditInfoVisible = false),
                 (this.editInfo.title = ""),
@@ -356,6 +359,7 @@ export default {
             this.$router.push("/");
           } else {
             sessionStorage.setItem("token", res.data.token);
+            this.reload();
             alert("删除成功!");
             (this.DeleteInfoVisible = false), (this.deleteInfo.id = "");
           }
