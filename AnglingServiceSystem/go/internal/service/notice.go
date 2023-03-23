@@ -101,7 +101,6 @@ func GetOneNotice(c *gin.Context) {
 // GetAllNotice 获取所有公告
 func GetAllNotice(c *gin.Context) {
 	noticeList, err := dao.GetAllNotice()
-	fmt.Println("所有公告信息 ", noticeList)
 	token := c.MustGet("token")
 
 	if err != nil {

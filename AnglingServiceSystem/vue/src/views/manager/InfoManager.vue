@@ -18,83 +18,133 @@
           <el-button type="info" style="margin-left: 20px" @click="search()"
             >搜索</el-button
           >
-          <el-button
-            type="info"
-            style="margin-left: 20px"
-            @click="AddNoticeVis()"
-            >发布公告</el-button
+          <el-button type="info" style="margin-left: 20px" @click="AddInfoVis()"
+            >发布资讯</el-button
           >
         </el-row>
         <el-dialog
-          title="发布公告"
-          :visible.sync="AddNoticeVisible"
+          title="发布资讯"
+          :visible.sync="AddInfoVisible"
           width="60%"
           :before-close="handleClose"
         >
           <el-row>
             <el-tag type="info">标题</el-tag>
             <el-input
-              v-model="notice.title"
+              v-model="info.title"
               style="width: 200px; margin-left: 20px"
             ></el-input>
+          </el-row>
+          <el-row>
+            <el-tag type="info">类型</el-tag>
+            <el-select
+              v-model="info.type"
+              placeholder="请选择"
+              style="margin-left: 20px"
+            >
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </el-row>
+          <el-row>
+            <el-tag type="info">主图</el-tag>
+            <el-upload
+              class="avatar-uploader"
+              :action="AudioAndVideoPath()"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload"
+              style="margin-left: 20px"
+            >
+              <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
           </el-row>
           <el-row>
             <el-tag type="info">内容</el-tag>
           </el-row>
           <el-row>
-            <QuillEditor v-model="notice.content"></QuillEditor>
+            <QuillEditor v-model="info.content"></QuillEditor>
           </el-row>
           <span slot="footer" class="dialog-footer">
             <el-button @click="Cancel()">取 消</el-button>
-            <el-button type="primary" @click="AddNotice()">确 定</el-button>
+            <el-button type="primary" @click="AddInfo()">确 定</el-button>
           </span>
         </el-dialog>
         <el-dialog
-          title="编辑公告"
-          :visible.sync="EditNoticeVisible"
+          title="编辑资讯"
+          :visible.sync="EditInfoVisible"
           width="60%"
           :before-close="handleClose"
         >
           <el-row>
             <el-tag type="info">标题</el-tag>
             <el-input
-              v-model="editNotice.title"
+              v-model="editInfo.title"
               style="width: 200px; margin-left: 20px"
             ></el-input>
+          </el-row>
+          <el-row>
+            <el-tag type="info">类型</el-tag>
+            <el-select
+              v-model="editInfo.type"
+              :placeholder="editInfo.type"
+              style="margin-left: 20px"
+            >
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
           </el-row>
           <el-row>
             <el-tag type="info">内容</el-tag>
           </el-row>
           <el-row>
-            <QuillEditor v-model="editNotice.content"></QuillEditor>
+            <QuillEditor v-model="editInfo.content"></QuillEditor>
           </el-row>
           <span slot="footer" class="dialog-footer">
             <el-button @click="Cancel()">取 消</el-button>
-            <el-button type="primary" @click="EditNotice()">确 定</el-button>
+            <el-button type="primary" @click="EditInfo()">确 定</el-button>
           </span>
         </el-dialog>
         <el-dialog
           title="提示"
-          :visible.sync="DeleteNoticeVisible"
+          :visible.sync="DeleteInfoVisible"
           width="30%"
           :before-close="handleClose"
         >
           <span>是否确认删除</span>
           <span slot="footer" class="dialog-footer">
-            <el-button @click="DeleteNoticeVisible = false">取 消</el-button>
-            <el-button type="primary" @click="DeleteNotice()">确 定</el-button>
+            <el-button @click="DeleteInfoVisible = false">取 消</el-button>
+            <el-button type="primary" @click="DeleteInfo()">确 定</el-button>
           </span>
         </el-dialog>
 
         <el-table
           :data="
-            notice_list_vis.slice(
+            info_list_vis.slice(
               (currentPage - 1) * pagesize,
               currentPage * pagesize
             )
           "
         >
-          <el-table-column prop="title" label="标题" width="400">
+          <el-table-column prop="title" label="标题" width="150">
+          </el-table-column>
+          <el-table-column prop="image" label="主图" width="400">
+            <template slot-scope="scope">
+              <img :src="GetImangePath(scope.row.id)" style="width: 50px" />
+            </template>
+          </el-table-column>
+          <el-table-column prop="type" label="类型" width="150">
           </el-table-column>
           <el-table-column prop="create_time" label="发布时间" width="300">
           </el-table-column>
@@ -103,10 +153,10 @@
               ><el-button type="success" @click="toDetail(scope.row)"
                 >查看</el-button
               >
-              <el-button type="warning" @click="EditNoticeVis(scope.row)"
+              <el-button type="warning" @click="EditInfoVis(scope.row)"
                 >编辑</el-button
               >
-              <el-button type="danger" @click="DeleteNoticeVis(scope.row)"
+              <el-button type="danger" @click="DeleteInfoVis(scope.row)"
                 >删除</el-button
               >
             </template>
@@ -130,31 +180,54 @@
 export default {
   data() {
     return {
+      imageUrl: "",
       currentPage: 1,
       pagesize: 10,
-      notice_list_vis: [],
+      info_list_vis: [],
       searchPlhText: "",
-      notice_list: [],
-      notice: {
+      info_list: [],
+      info: {
         title: "",
         content: "",
+        type: "",
       },
-      editNotice: {
+      editInfo: {
+        id: "",
         title: "",
         content: "",
+        type: "",
+        create_time: "",
       },
-      deleteNotice: {
+      deleteInfo: {
         id: "",
       },
-      AddNoticeVisible: false,
-      EditNoticeVisible: false,
-      DeleteNoticeVisible: false,
+      AddInfoVisible: false,
+      EditInfoVisible: false,
+      DeleteInfoVisible: false,
+      options: [
+        {
+          value: "钓鱼新闻",
+          label: "钓鱼新闻",
+        },
+        {
+          value: "钓鱼菜谱",
+          label: "钓鱼菜谱",
+        },
+        {
+          value: "钓鱼比赛",
+          label: "钓鱼比赛",
+        },
+        {
+          value: "钓鱼技巧",
+          label: "钓鱼技巧",
+        },
+      ],
     };
   },
   created() {
     this.axios({
       method: "GET",
-      url: this.global.apiUrl + "/getAllNotice",
+      url: this.global.apiUrl + "/getAllInfo",
       headers: {
         Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
@@ -170,34 +243,35 @@ export default {
           this.$router.push("/");
         } else {
           sessionStorage.setItem("token", res.data.token);
-          this.notice_list = res.data.notice_list;
-          for (let i = 0; i < this.notice_list.length; i++) {
-            this.notice_list[i].create_time = this.notice_list[
-              i
-            ].create_time.slice(0, 10);
+          this.info_list = res.data.info_list;
+          for (let i = 0; i < this.info_list.length; i++) {
+            this.info_list[i].create_time = this.info_list[i].create_time.slice(
+              0,
+              10
+            );
           }
-          this.notice_list_vis = this.notice_list;
+          this.info_list_vis = this.info_list;
         }
       })
       .catch((err) => {});
   },
   watch: {},
   methods: {
-    AddNoticeVis() {
-      this.AddNoticeVisible = true;
+    AddInfoVis() {
+      this.AddInfoVisible = true;
     },
     Cancel() {
-      this.AddNoticeVisible = false;
-      this.EditNoticeVisible = false;
-      (this.notice.title = ""), (this.notice.content = "");
+      this.AddInfoVisible = false;
+      this.EditInfoVisible = false;
+      (this.info.title = ""), (this.info.content = "");
     },
-    AddNotice() {
-      if (this.notice.title == "" || this.notice.content == "") {
+    AddInfo() {
+      if (this.info.title == "" || this.info.content == "") {
         alert("标题或内容不能为空!");
       } else {
         this.axios({
-          url: this.global.apiUrl + "/addNotice",
-          data: this.notice,
+          url: this.global.apiUrl + "/addInfo",
+          data: this.info,
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -216,9 +290,9 @@ export default {
             } else {
               sessionStorage.setItem("token", res.data.token);
               alert("发布成功!");
-              (this.AddNoticeVisible = false),
-                (this.notice.title = ""),
-                (this.notice.content = "");
+              (this.AddInfoVisible = false),
+                (this.info.title = ""),
+                (this.info.content = "");
             }
           })
           .catch((Error) => {
@@ -226,13 +300,13 @@ export default {
           });
       }
     },
-    EditNotice() {
-      if (this.editNotice.title == "" || this.editNotice.content == "") {
+    EditInfo() {
+      if (this.editInfo.title == "" || this.editInfo.content == "") {
         alert("标题或内容不能为空!");
       } else {
         this.axios({
-          url: this.global.apiUrl + "/updateNotice",
-          data: this.editNotice,
+          url: this.global.apiUrl + "/updateInfo",
+          data: this.editInfo,
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -251,9 +325,9 @@ export default {
             } else {
               sessionStorage.setItem("token", res.data.token);
               alert("修改成功!");
-              (this.EditNoticeVisible = false),
-                (this.editNotice.title = ""),
-                (this.editNotice.content = "");
+              (this.EditInfoVisible = false),
+                (this.editInfo.title = ""),
+                (this.editInfo.content = "");
             }
           })
           .catch((Error) => {
@@ -261,10 +335,10 @@ export default {
           });
       }
     },
-    DeleteNotice() {
+    DeleteInfo() {
       this.axios({
-        url: this.global.apiUrl + "/deleteNotice",
-        data: this.deleteNotice,
+        url: this.global.apiUrl + "/deleteInfo",
+        data: this.deleteInfo,
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -283,39 +357,40 @@ export default {
           } else {
             sessionStorage.setItem("token", res.data.token);
             alert("删除成功!");
-            (this.DeleteNoticeVisible = false), (this.deleteNotice.id = "");
+            (this.DeleteInfoVisible = false), (this.deleteInfo.id = "");
           }
         })
         .catch((Error) => {
           console.log(Error);
         });
     },
-    EditNoticeVis(row) {
-      this.EditNoticeVisible = true;
-      this.editNotice.title = row.title;
-      this.editNotice.id = row.id;
-      this.editNotice.content = row.content;
+    EditInfoVis(row) {
+      this.EditInfoVisible = true;
+      this.editInfo.title = row.title;
+      this.editInfo.id = row.id;
+      this.editInfo.content = row.content;
+      this.editInfo.type = row.type;
     },
-    DeleteNoticeVis(row) {
-      this.deleteNotice.id = row.id;
-      this.DeleteNoticeVisible = true;
+    DeleteInfoVis(row) {
+      this.deleteInfo.id = row.id;
+      this.DeleteInfoVisible = true;
     },
     toDetail(row) {
       this.$router.push({
-        name: "detailednotice",
+        name: "detailedinfo",
         query: { param: row },
       });
     },
     search() {
       if (this.searchPlhText == "") {
-        this.notice_list_vis = this.notice_list;
+        this.info_list_vis = this.info_list;
       } else {
         //获取到查询的值，并使用toLowerCase():把字符串转换成小写，让模糊查询更加清晰
         let _search = this.searchPlhText.toLowerCase();
         let newListData = []; // 用于存放搜索出来数据的新数组
         if (_search) {
           //filter 过滤数组
-          this.notice_list.filter((item) => {
+          this.info_list.filter((item) => {
             // newListData中 没有查询的内容，就添加到newListData中
             if (item.title.toLowerCase().indexOf(_search) !== -1) {
               newListData.push(item);
@@ -323,7 +398,7 @@ export default {
           });
         }
         //查询后的表格 赋值过滤后的数据
-        this.notice_list_vis = newListData;
+        this.info_list_vis = newListData;
       }
     },
     handleSizeChange: function (size) {
@@ -334,6 +409,57 @@ export default {
       this.currentPage = currentPage;
       console.log(this.currentPage); //点击第几页
     },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isJPG) {
+        this.$message.error("上传图片只能是 JPG 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传图片大小不能超过 2MB!");
+      }
+      return isJPG && isLt2M;
+    },
+    AudioAndVideoPath: function () {
+      return this.global.apiUrl + "/upload";
+    },
+    GetImangePath: function (id) {
+      return (
+        this.global.apiUrl +
+        "/getImage?imageName=./web/static/images/info" +
+        id +
+        ".jpg"
+      );
+    },
   },
 };
 </script>
+
+<style>
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+</style>

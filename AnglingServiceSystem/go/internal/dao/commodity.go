@@ -6,9 +6,9 @@ import (
 )
 
 // AddCommodity 发布商品
-func AddCommodity(commodity models.Commodity) (err error) {
-	err = util.MysqlDB.Create(&commodity).Error
-	return
+func AddCommodity(commodity models.Commodity) (models.Commodity, error) {
+	err := util.MysqlDB.Create(&commodity).Error
+	return commodity, err
 }
 
 // GetAllCommodity 所有商品信息
@@ -25,7 +25,7 @@ func DeleteCommodity(commodity models.Commodity) (err error) {
 
 // UpdateCommodity 修改商品信息
 func UpdateCommodity(commodity models.Commodity) (err error) {
-	err = util.MysqlDB.Where("Id = ?", commodity.ID).Save(&commodity).Error
+	err = util.MysqlDB.Where("Id = ?", commodity.ID).Omit("create_time", "id").Save(&commodity).Error
 	return
 }
 

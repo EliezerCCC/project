@@ -1,12 +1,9 @@
 package routers
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"go/internal/middleware"
 	"go/internal/service"
-	"net/http"
-	"path"
 )
 
 func SetupRouter() *gin.Engine {
@@ -43,24 +40,32 @@ func SetupRouter() *gin.Engine {
 	//删除资讯
 	r.POST("/deleteInfo", middleware.JWTAuthMiddleware(), service.DeleteInfo)
 
+	//发布商品
+	r.POST("/addCommodity", middleware.JWTAuthMiddleware(), service.AddCommodity)
 	//获取所有商品
-	r.GET("/getAllCommodity", service.GetAllCommodity)
+	r.GET("/getAllCommodity", middleware.JWTAuthMiddleware(), service.GetAllCommodity)
+	//获取某件商品
+	r.POST("/getOneCommodity", middleware.JWTAuthMiddleware(), service.GetOneCommodity)
+	//修改某件商品
+	r.POST("/updateCommodity", middleware.JWTAuthMiddleware(), service.UpdateCommodity)
+	//删除商品
+	r.POST("/deleteCommodity", middleware.JWTAuthMiddleware(), service.DeleteCommodity)
 
-	r.POST("/api/private/v1/upload", func(c *gin.Context) {
-		f, err := c.FormFile("file")
-		if err != nil {
-			c.String(http.StatusBadRequest, "接收文件失败")
-			return
-		}
-		fmt.Println(f.Filename)
-		dst := path.Join("./web/static/images", "tupian2.jpg")
-		if err := c.SaveUploadedFile(f, dst); err != nil {
-			c.String(http.StatusBadRequest, "保存文件失败")
-			return
-		}
-		c.String(http.StatusOK, "上传文件成功")
+	//发布钓场
+	r.POST("/addAnglingSite", middleware.JWTAuthMiddleware(), service.AddAnglingSite)
+	//获取所有钓场
+	r.GET("/getAllAnglingSite", middleware.JWTAuthMiddleware(), service.GetAllAnglingSite)
+	//获取某钓场
+	r.POST("/getOneAnglingSite", middleware.JWTAuthMiddleware(), service.GetOneAnglingSite)
+	//修改某钓场
+	r.POST("/updateAnglingSite", middleware.JWTAuthMiddleware(), service.UpdateAnglingSite)
+	//删除钓场
+	r.POST("/deleteAnglingSite", middleware.JWTAuthMiddleware(), service.DeleteAnglingSite)
 
-	})
+	//上传图片
+	r.POST("/upload", service.Upload)
+	//获取图片
+	r.GET("/getImage", service.Image)
 
 	return r
 }

@@ -25,7 +25,7 @@ func DeleteNotice(notice models.Notice) (err error) {
 
 // UpdateNotice 修改公告信息
 func UpdateNotice(notice models.Notice) (err error) {
-	err = util.MysqlDB.Where("Id = ?", notice.ID).Save(&notice).Error
+	err = util.MysqlDB.Where("Id = ?", notice.ID).Omit("create_time", "id").Save(&notice).Error
 	return
 }
 

@@ -2,7 +2,7 @@
   <div>
     <HeaderTop></HeaderTop>
     <el-row>
-      <h1 style="margin: auto">{{ this.notice.title }}</h1>
+      <h1 style="margin: auto">{{ this.info.title }}</h1>
       <el-button
         type="info"
         round
@@ -13,10 +13,10 @@
     </el-row>
     <el-row>
       <p
-        v-html="this.notice.content"
+        v-html="this.info.content"
         style="margin: auto; margin-top: 20px; width: 1000px"
       >
-        {{ this.notice.content }}
+        {{ this.info.content }}
       </p>
     </el-row>
   </div>
@@ -27,7 +27,7 @@ export default {
   name: "Detail",
   data() {
     return {
-      notice: {},
+      info: {},
     };
   },
   methods: {
@@ -38,7 +38,7 @@ export default {
   created() {
     this.axios({
       method: "POST",
-      url: this.global.apiUrl + "/getOneNotice",
+      url: this.global.apiUrl + "/getOneInfo",
       data: {
         id: this.$route.query.param.id,
       },
@@ -57,7 +57,7 @@ export default {
           this.$router.push("/");
         } else {
           sessionStorage.setItem("token", res.data.token);
-          this.notice = res.data.notice;
+          this.info = res.data.info;
         }
       })
       .catch((err) => {});

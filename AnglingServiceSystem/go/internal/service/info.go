@@ -5,6 +5,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"go/internal/dao"
 	"go/internal/models"
+	"os"
+	"strconv"
 	"time"
 )
 
@@ -18,10 +20,15 @@ func AddInfo(c *gin.Context) {
 
 	fmt.Println("发布资讯:", info)
 
-	err := dao.AddInfo(info)
+	newInfo, err := dao.AddInfo(info)
+	fmt.Println(newInfo)
+
+	imagePath := "./web/static/images/newImage.jpg"
+	newImage := "./web/static/images/info" + strconv.FormatInt(newInfo.ID, 10) + ".jpg"
+	err = os.Rename(imagePath, newImage)
 
 	if err != nil {
-		c.JSON(200, gin.H{"error": err.Error()})
+		c.JSON(200, gin.H{"error": err.Error(), "token": token})
 		fmt.Println("发布资讯失败！")
 	} else {
 		fmt.Println("发布资讯成功！")
@@ -101,7 +108,6 @@ func GetOneInfo(c *gin.Context) {
 // GetAllInfo 获取所有资讯
 func GetAllInfo(c *gin.Context) {
 	infoList, err := dao.GetAllInfo()
-	fmt.Println("所有资讯信息 ", infoList)
 	token := c.MustGet("token")
 
 	if err != nil {
