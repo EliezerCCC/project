@@ -13,7 +13,7 @@ func AddNotice(notice models.Notice) (err error) {
 
 // GetAllNotice 所有公告信息
 func GetAllNotice() (noticeList []models.Notice, err error) {
-	err = util.MysqlDB.Find(&noticeList).Error
+	err = util.MysqlDB.Order("create_time desc").Find(&noticeList).Error
 	return
 }
 

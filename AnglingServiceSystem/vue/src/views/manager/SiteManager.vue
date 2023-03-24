@@ -31,21 +31,21 @@
           width="60%"
           :before-close="handleClose"
         >
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">钓场名</el-tag>
             <el-input
               v-model="anglingSite.name"
               style="width: 200px; margin-left: 20px"
             ></el-input>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">地址</el-tag>
             <el-input
               v-model="anglingSite.address"
               style="width: 500px; margin-left: 20px"
             ></el-input>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">主图</el-tag>
             <el-upload
               class="avatar-uploader"
@@ -53,16 +53,16 @@
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload"
-              style="margin-left: 20px"
+              style="margin-left: 20px; margin-top: 15px"
             >
               <img v-if="imageUrl" :src="imageUrl" class="avatar" />
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">简介</el-tag>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <QuillEditor v-model="anglingSite.introduction"></QuillEditor>
           </el-row>
           <span slot="footer" class="dialog-footer">
@@ -78,24 +78,24 @@
           width="60%"
           :before-close="handleClose"
         >
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">钓场名</el-tag>
             <el-input
               v-model="editAnglingSite.name"
               style="width: 200px; margin-left: 20px"
             ></el-input>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">地址</el-tag>
             <el-input
               v-model="editAnglingSite.address"
               style="width: 500px; margin-left: 20px"
             ></el-input>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">简介</el-tag>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <QuillEditor v-model="editAnglingSite.introduction"></QuillEditor>
           </el-row>
           <span slot="footer" class="dialog-footer">
@@ -127,20 +127,22 @@
           width="60%"
           :before-close="handleClose"
         >
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">名称</el-tag>
             <el-tag style="margin-left: 20px">{{
               detailedAnglingSite.name
             }}</el-tag>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">地址</el-tag>
             <el-tag style="margin-left: 20px">{{
               detailedAnglingSite.address
             }}</el-tag>
           </el-row>
-          <el-row> <el-tag type="info">简介</el-tag> </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
+            <el-tag type="info">简介</el-tag>
+          </el-row>
+          <el-row style="margin-top: 15px">
             <p
               v-html="this.detailedAnglingSite.introduction"
               style="margin-left: 60px; margin-top: 20px; width: 600px"

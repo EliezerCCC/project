@@ -4,6 +4,7 @@ import anglingsite from "../views/AnglingSite.vue";
 import chatroom from "../views/ChatRoom.vue";
 import detailedinfo from "../views/detailedInfo/DetailedInfo.vue";
 import detailednotice from "../views/detailedInfo/DetailedNotice.vue";
+import detailedpost from "../views/detailedInfo/DetailedPost.vue";
 import forum from "../views/Forum.vue";
 import home from "../views/Home.vue";
 import info from "../views/Info.vue";
@@ -123,6 +124,11 @@ const routes = [
     path: "/detailedinfo",
     name: "detailedinfo",
     component: detailedinfo,
+  },
+  {
+    path: "/detailedpost",
+    name: "detailedpost",
+    component: detailedpost,
   },
 ];
 

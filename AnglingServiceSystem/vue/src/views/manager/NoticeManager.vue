@@ -31,17 +31,17 @@
           width="60%"
           :before-close="handleClose"
         >
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">标题</el-tag>
             <el-input
               v-model="notice.title"
               style="width: 200px; margin-left: 20px"
             ></el-input>
-          </el-row>
-          <el-row>
+          </el-row >
+          <el-row style="margin-top: 15px">
             <el-tag type="info">内容</el-tag>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <QuillEditor v-model="notice.content"></QuillEditor>
           </el-row>
           <span slot="footer" class="dialog-footer">
@@ -55,17 +55,17 @@
           width="60%"
           :before-close="handleClose"
         >
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">标题</el-tag>
             <el-input
               v-model="editNotice.title"
               style="width: 200px; margin-left: 20px"
             ></el-input>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">内容</el-tag>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <QuillEditor v-model="editNotice.content"></QuillEditor>
           </el-row>
           <span slot="footer" class="dialog-footer">

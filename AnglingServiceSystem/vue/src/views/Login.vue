@@ -1,5 +1,6 @@
 <template>
   <div class="loginbody">
+    input
     <div class="logindata">
       <div class="logintext">
         <h2>Welcome</h2>
@@ -211,7 +212,7 @@ export default {
                   this.global.md5key
                 ),
                 identity: "user",
-                status: "normal",
+                status: "正常",
               },
               method: "POST",
               header: {

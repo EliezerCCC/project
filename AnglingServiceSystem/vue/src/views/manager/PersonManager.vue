@@ -26,16 +26,16 @@
           width="60%"
           :before-close="handleClose"
         >
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">账号</el-tag>
-              <el-tag>{{editUser.id}}</el-tag>
+              <el-tag style="margin-left: 20px;">{{editUser.id}}</el-tag>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">昵称</el-tag></el-tag>
-            <el-tag>{{editUser.name}}</el-tag>
+            <el-tag style="margin-left: 20px;">{{editUser.name}}</el-tag>
           </el-row>
-          <el-row>
-            <el-tag type="info">身份</el-tag></el-tag>
+          <el-row style="margin-top: 15px">
+            <el-tag type="info" >身份</el-tag></el-tag>
             <el-select
               v-model="editUser.identity"
               :placeholder="editUser.identity"
@@ -50,7 +50,7 @@
               </el-option>
             </el-select>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">状态</el-tag>
             <el-select
               v-model="editUser.status"

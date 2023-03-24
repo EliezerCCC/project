@@ -3,7 +3,7 @@
     <HeaderTop></HeaderTop>
     <el-row gutter="20">
       <el-col :span="10" :offset="9">
-        <h1 style="margin: auto">{{ this.info.title }}</h1>
+        <h1 style="margin: auto">{{ this.post.title }}</h1>
       </el-col>
       <el-col :span="2">
         <el-button
@@ -16,11 +16,14 @@
       </el-col>
     </el-row>
     <el-row>
+      <el-col :span="2" :offset="18">作者:{{ this.post.user_name }}</el-col>
+    </el-row>
+    <el-row>
       <p
-        v-html="this.info.content"
+        v-html="this.post.content"
         style="margin: auto; margin-top: 20px; width: 1000px"
       >
-        {{ this.info.content }}
+        {{ this.post.content }}
       </p>
     </el-row>
   </div>
@@ -31,7 +34,7 @@ export default {
   name: "Detail",
   data() {
     return {
-      info: {},
+      post: {},
     };
   },
   methods: {
@@ -42,7 +45,7 @@ export default {
   created() {
     this.axios({
       method: "POST",
-      url: this.global.apiUrl + "/getOneInfo",
+      url: this.global.apiUrl + "/getOnePost",
       data: {
         id: this.$route.query.param.id,
       },
@@ -61,7 +64,7 @@ export default {
           this.$router.push("/");
         } else {
           sessionStorage.setItem("token", res.data.token);
-          this.info = res.data.info;
+          this.post = res.data.post;
         }
       })
       .catch((err) => {});

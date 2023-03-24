@@ -1,15 +1,19 @@
 <template>
   <div>
     <HeaderTop></HeaderTop>
-    <el-row>
-      <h1 style="margin: auto">{{ this.notice.title }}</h1>
-      <el-button
-        type="info"
-        round
-        style="margin-top: 5px; margin-right: 5px"
-        @click="Back()"
-        >返回</el-button
+    <el-row gutter="20">
+      <el-col :span="10" :offset="9">
+        <h1 style="margin: auto">{{ this.notice.title }}</h1></el-col
       >
+      <el-col :span="2">
+        <el-button
+          type="info"
+          round
+          style="margin-top: 5px; margin-right: 5px"
+          @click="Back()"
+          >返回</el-button
+        >
+      </el-col>
     </el-row>
     <el-row>
       <p

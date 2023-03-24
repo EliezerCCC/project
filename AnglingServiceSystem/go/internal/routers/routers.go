@@ -80,6 +80,17 @@ func SetupRouter() *gin.Engine {
 	//删除推荐
 	r.POST("/deleteRecommend", middleware.JWTAuthMiddleware(), service.DeleteRecommend)
 
+	//发布帖子
+	r.POST("/addPost", middleware.JWTAuthMiddleware(), service.AddPost)
+	//获取所有帖子
+	r.GET("/getAllPost", middleware.JWTAuthMiddleware(), service.GetAllPost)
+	//获取某帖子
+	r.POST("/getOnePost", middleware.JWTAuthMiddleware(), service.GetOnePost)
+	//修改某帖子
+	r.POST("/updatePost", middleware.JWTAuthMiddleware(), service.UpdatePost)
+	//删除帖子
+	r.POST("/deletePost", middleware.JWTAuthMiddleware(), service.DeletePost)
+
 	//上传图片
 	r.POST("/upload", service.Upload)
 	//获取图片

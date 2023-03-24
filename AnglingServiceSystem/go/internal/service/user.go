@@ -15,7 +15,8 @@ func Login(c *gin.Context) {
 
 	fmt.Println("用户登录:", user)
 
-	identity, result, err := dao.Login(user)
+	identity, name, result, err := dao.Login(user)
+	user.Name = name
 
 	//生成token
 	token, err := middleware.GenToken(user)

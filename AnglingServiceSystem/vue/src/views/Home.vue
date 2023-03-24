@@ -1,25 +1,80 @@
 <template>
   <div>
     <HeaderTop></HeaderTop>
+    <el-row :gutter="20">
+      <el-col span="5">
+        <div class="block" style="margin-top: 90px; margin-left: 50px">
+          <el-carousel style="width: 800px" height="500px">
+            <el-carousel-item v-for="item in image_list" :key="item">
+              <el-image :src="item" style="width: 100%"></el-image>
+            </el-carousel-item>
+          </el-carousel>
+        </div>
+      </el-col>
+      <el-col span="11" style="margin-left: 500px">
+        <h1>公告栏</h1>
+        <el-table :data="notice_list" stripe height="500">
+          <el-table-column prop="title" label="标题" width="650">
+            <template slot-scope="scope">
+              <label @click="toDetailNotice(scope.row)">{{
+                scope.row.title
+              }}</label>
+            </template>
+          </el-table-column>
 
-    <h1 class="header">公告栏</h1>
-    <el-button style="margin-left: 1750px">发布公告</el-button>
-    <div class="notice_body">
-      <el-table :data="notices" style="width: 100%">
-        <el-table-column prop="title" label="主题" width="600">
-        </el-table-column>
-        <el-table-column prop="create_time" label="发布时间" width="200">
-        </el-table-column>
-        <el-table-column fixed="right" label="操作" width="100">
-          <template slot-scope="scope">
-            <el-button @click="OneNotice(scope.row)" type="text" size="small"
-              >查看</el-button
-            >
-            <el-button type="text" size="small">编辑</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
+          <el-table-column prop="create_time" label="日期" width="180">
+          </el-table-column>
+        </el-table>
+      </el-col>
+    </el-row>
+    <el-row gutter="20">
+      <el-col :span="3">
+        <h1 style="margin-left: 70px">最新资讯</h1>
+      </el-col>
+      <el-col :span="2" style="margin-top: 25px">
+        <el-button type="info" @click="ToInfo()">更多资讯</el-button>
+      </el-col>
+    </el-row>
+    <el-row style="margin-left: 40px">
+      <el-col :span="4.5" v-for="(o, index) in info_list.slice(0, 8)" :key="o">
+        <el-card
+          style="
+            width: 400px;
+            height: 140px;
+            margin-top: 20px;
+            margin-left: 30px;
+          "
+        >
+          <el-row>
+            <el-col :span="8">
+              <img
+                :src="GetInfoImangePath(o.id)"
+                class="image"
+                style="width: 100px; height: 100px"
+            /></el-col>
+            <el-col :span="16">
+              <el-row>
+                <h4
+                  style="
+                    width: 250px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    -webkit-line-clamp: 2;
+                  "
+                  @click="toDetailInfo(o)"
+                >
+                  {{ o.title }}
+                </h4>
+              </el-row>
+              <el-row style="margin-top: 20px; margin-left: 150px">
+                <label>{{ o.type }}</label>
+              </el-row>
+            </el-col>
+          </el-row>
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -27,84 +82,102 @@
 export default {
   data() {
     return {
-      notices: [
-        {
-          title: "公告1",
-          content:
-            "公告公告公告公告公告公告公告公告公告公告公告公告公告公告公告公告公告公告公告",
-          create_time: "12345678",
-        },
-        {
-          title: "维护通知",
-          content:
-            "本网站将于本周二凌晨两点开始维护，维护时长2-4小时不等，维护完成即可恢复正常使用。",
-          create_time: "12345678",
-        },
-        {
-          title: "公告3",
-          content: "hahahahha",
-          create_time: "12345678",
-        },
-        {
-          title: "公告4",
-          content: "hahahahha",
-          create_time: "12345678",
-        },
+      image_list: [
+        require("../assets/1.jpg"),
+        require("../assets/2.jpg"),
+        require("../assets/3.jpg"),
       ],
+      notice_list: [],
+      info_list: [],
     };
   },
-  created() {},
+  created() {
+    this.axios({
+      method: "GET",
+      url: this.global.apiUrl + "/getAllNotice",
+      headers: {
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        if (
+          res.data.code == 2003 ||
+          res.data.code == 2004 ||
+          res.data.code == 2005
+        ) {
+          alert("请先完成登录!");
+          this.$router.push("/");
+        } else {
+          sessionStorage.setItem("token", res.data.token);
+          this.notice_list = res.data.notice_list;
+          for (let i = 0; i < this.notice_list.length; i++) {
+            this.notice_list[i].create_time = this.notice_list[
+              i
+            ].create_time.slice(0, 10);
+          }
+          this.notice_list_vis = this.notice_list;
+        }
+      })
+      .catch((err) => {});
+
+    this.axios({
+      method: "GET",
+      url: this.global.apiUrl + "/getAllInfo",
+      headers: {
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        if (
+          res.data.code == 2003 ||
+          res.data.code == 2004 ||
+          res.data.code == 2005
+        ) {
+          alert("请先完成登录!");
+          this.$router.push("/");
+        } else {
+          sessionStorage.setItem("token", res.data.token);
+          this.info_list = res.data.info_list;
+          for (let i = 0; i < this.info_list.length; i++) {
+            this.info_list[i].create_time = this.info_list[i].create_time.slice(
+              0,
+              10
+            );
+          }
+          this.info_list_vis = this.info_list;
+        }
+      })
+      .catch((err) => {});
+  },
   watch: {},
   methods: {
-    OneNotice(notice) {
-      this.$alert(notice.content, notice.title, {
-        confirmButtonText: "确定",
+    toDetailNotice(row) {
+      this.$router.push({
+        name: "detailednotice",
+        query: { param: row },
       });
+    },
+    toDetailInfo(row) {
+      this.$router.push({
+        name: "detailedinfo",
+        query: { param: row },
+      });
+    },
+    GetInfoImangePath: function (id) {
+      return (
+        this.global.apiUrl +
+        "/getImage?imageName=./web/static/images/info" +
+        id +
+        ".jpg"
+      );
+    },
+    ToInfo() {
+      this.$router.push("/info");
     },
   },
 };
 </script>
 
-<style>
-.notice_body {
-  margin: auto;
-  width: 900px;
-}
-
-.header {
-  text-align: center;
-}
-
-.el-row {
-  margin-bottom: 20px;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.el-col {
-  border-radius: 10px;
-  align-items: stretch;
-  margin-bottom: 40px;
-}
-
-.text {
-  font-size: 14px;
-}
-
-.item {
-  margin-bottom: 18px;
-}
-
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: "";
-}
-.clearfix:after {
-  clear: both;
-}
-
-.box-card {
-  width: 480px;
-}
-</style>
+<style></style>

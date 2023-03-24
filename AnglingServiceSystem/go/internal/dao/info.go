@@ -13,7 +13,7 @@ func AddInfo(info models.Info) (models.Info, error) {
 
 // GetAllInfo 所有资讯信息
 func GetAllInfo() (infoList []models.Info, err error) {
-	err = util.MysqlDB.Find(&infoList).Error
+	err = util.MysqlDB.Order("create_time desc").Find(&infoList).Error
 	return
 }
 

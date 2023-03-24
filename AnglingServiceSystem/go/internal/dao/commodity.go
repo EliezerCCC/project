@@ -13,7 +13,7 @@ func AddCommodity(commodity models.Commodity) (models.Commodity, error) {
 
 // GetAllCommodity 所有商品信息
 func GetAllCommodity() (commodityList []models.Commodity, err error) {
-	err = util.MysqlDB.Find(&commodityList).Error
+	err = util.MysqlDB.Order("create_time desc").Find(&commodityList).Error
 	return
 }
 

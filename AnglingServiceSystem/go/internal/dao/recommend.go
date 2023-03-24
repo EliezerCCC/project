@@ -13,7 +13,7 @@ func AddRecommend(recommend models.Recommend) (models.Recommend, error) {
 
 // GetAllRecommend 所有推荐信息
 func GetAllRecommend() (recommendList []models.Recommend, err error) {
-	err = util.MysqlDB.Find(&recommendList).Error
+	err = util.MysqlDB.Order("create_time desc").Find(&recommendList).Error
 	return
 }
 

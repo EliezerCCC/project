@@ -116,7 +116,8 @@ func JWTAuthMiddleware() func(c *gin.Context) {
 			return
 		}
 		c.Set("token", token2)
-		c.Set("user", mc.User)
+		c.Set("user_id", mc.User.ID)
+		c.Set("user_name", mc.User.Name)
 		c.Next() // 后续的处理函数可以用过c.Get("User")来获取当前请求的用户信息
 	}
 }

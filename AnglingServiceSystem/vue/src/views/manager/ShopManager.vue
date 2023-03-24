@@ -31,14 +31,14 @@
           width="60%"
           :before-close="handleClose"
         >
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">商品名</el-tag>
             <el-input
               v-model="commodity.name"
               style="width: 200px; margin-left: 20px"
             ></el-input>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">类型</el-tag>
             <el-select
               v-model="commodity.type"
@@ -54,7 +54,7 @@
               </el-option>
             </el-select>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">价格</el-tag>
             <el-input
               type="number"
@@ -62,7 +62,7 @@
               style="width: 200px; margin-left: 20px"
             ></el-input>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">数量</el-tag>
             <el-input
               type="number"
@@ -70,7 +70,7 @@
               style="width: 200px; margin-left: 20px"
             ></el-input>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">主图</el-tag>
             <el-upload
               class="avatar-uploader"
@@ -78,16 +78,16 @@
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload"
-              style="margin-left: 20px"
+              style="margin-left: 20px; margin-top: 15px"
             >
               <img v-if="imageUrl" :src="imageUrl" class="avatar" />
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">简介</el-tag>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <QuillEditor v-model="commodity.introduction"></QuillEditor>
           </el-row>
           <span slot="footer" class="dialog-footer">
@@ -101,14 +101,14 @@
           width="60%"
           :before-close="handleClose"
         >
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">商品名</el-tag>
             <el-input
               v-model="editCommodity.name"
               style="width: 200px; margin-left: 20px"
             ></el-input>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">价格</el-tag>
             <el-input
               type="number"
@@ -116,7 +116,7 @@
               style="width: 200px; margin-left: 20px"
             ></el-input>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">数量</el-tag>
             <el-input
               type="number"
@@ -124,7 +124,7 @@
               style="width: 200px; margin-left: 20px"
             ></el-input>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">类型</el-tag>
             <el-select
               v-model="editCommodity.type"
@@ -140,7 +140,7 @@
               </el-option>
             </el-select>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">状态</el-tag>
             <el-select
               v-model="editCommodity.status"
@@ -156,10 +156,10 @@
               </el-option>
             </el-select>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">简介</el-tag>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <QuillEditor v-model="editCommodity.introduction"></QuillEditor>
           </el-row>
           <span slot="footer" class="dialog-footer">
@@ -187,26 +187,28 @@
           width="60%"
           :before-close="handleClose"
         >
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">名称</el-tag>
             <el-tag style="margin-left: 20px">{{
               detailedCommodity.name
             }}</el-tag>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">价格</el-tag>
-            <el-tag style="margin-left: 20px">{{
-              detailedCommodity.price
-            }}</el-tag>
+            <el-tag style="margin-left: 20px"
+              >{{ detailedCommodity.price }}元</el-tag
+            >
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">数量</el-tag>
             <el-tag style="margin-left: 20px">{{
               detailedCommodity.amount
             }}</el-tag>
           </el-row>
-          <el-row> <el-tag type="info">简介</el-tag> </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
+            <el-tag type="info">简介</el-tag>
+          </el-row>
+          <el-row style="margin-top: 15px">
             <p
               v-html="this.detailedCommodity.introduction"
               style="margin-left: 60px; margin-top: 20px; width: 600px"
@@ -342,6 +344,10 @@ export default {
         {
           value: "配件",
           label: "配件",
+        },
+        {
+          value: "其他",
+          label: "其他",
         },
       ],
       statusOptions: [
@@ -543,12 +549,6 @@ export default {
     DeleteCommodityVis(row) {
       this.deleteCommodity.id = row.id;
       this.DeleteCommodityVisible = true;
-    },
-    toDetail(row) {
-      this.$router.push({
-        name: "detailedcommodity",
-        query: { param: row },
-      });
     },
     search() {
       if (this.searchPlhText == "") {

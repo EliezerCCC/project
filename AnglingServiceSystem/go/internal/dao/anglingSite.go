@@ -13,7 +13,7 @@ func AddAnglingSite(anglingSite models.AnglingSite) (models.AnglingSite, error) 
 
 // GetAllAnglingSite 所有钓场信息
 func GetAllAnglingSite() (anglingSiteList []models.AnglingSite, err error) {
-	err = util.MysqlDB.Find(&anglingSiteList).Error
+	err = util.MysqlDB.Order("create_time desc").Find(&anglingSiteList).Error
 	return
 }
 

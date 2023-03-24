@@ -31,21 +31,21 @@
           width="60%"
           :before-close="handleClose"
         >
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">名称</el-tag>
             <el-input
               v-model="recommend.fish_name"
               style="width: 200px; margin-left: 20px"
             ></el-input>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">信息</el-tag>
             <el-input
               v-model="recommend.fish_info"
               style="width: 500px; margin-left: 20px"
             ></el-input>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">主图</el-tag>
             <el-upload
               class="avatar-uploader"
@@ -53,16 +53,16 @@
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload"
-              style="margin-left: 20px"
+              style="margin-left: 20px; margin-top: 15px"
             >
               <img v-if="imageUrl" :src="imageUrl" class="avatar" />
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">推荐内容</el-tag>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <QuillEditor v-model="recommend.recommend_info"></QuillEditor>
           </el-row>
           <span slot="footer" class="dialog-footer">
@@ -76,24 +76,24 @@
           width="60%"
           :before-close="handleClose"
         >
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">名称</el-tag>
             <el-input
               v-model="editRecommend.fish_name"
               style="width: 200px; margin-left: 20px"
             ></el-input>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">信息</el-tag>
             <el-input
               v-model="editRecommend.fish_info"
               style="width: 500px; margin-left: 20px"
             ></el-input>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">推荐信息</el-tag>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <QuillEditor v-model="editRecommend.recommend_info"></QuillEditor>
           </el-row>
           <span slot="footer" class="dialog-footer">
@@ -121,26 +121,26 @@
           width="40%"
           :before-close="handleClose"
         >
-          <el-row>
+          <el-row style="margin-top: 15px">
             <img
               :src="GetImangePath(detailedRecommend.id)"
               style="width: 200px; margin-left: 60px"
             />
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">名称</el-tag>
             <el-tag style="margin-left: 20px">{{
               detailedRecommend.fish_name
             }}</el-tag>
           </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px">
             <el-tag type="info">信息</el-tag>
             <el-tag style="margin-left: 20px">{{
               detailedRecommend.fish_info
             }}</el-tag>
           </el-row>
-          <el-row> <el-tag type="info">推荐信息</el-tag> </el-row>
-          <el-row>
+          <el-row style="margin-top: 15px"> <el-tag type="info">推荐信息</el-tag> </el-row>
+          <el-row style="margin-top: 15px">
             <p
               v-html="this.detailedRecommend.recommend_info"
               style="margin-left: 60px; margin-top: 20px; width: 600px"
