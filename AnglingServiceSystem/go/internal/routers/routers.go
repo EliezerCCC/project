@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"go/internal/middleware"
 	"go/internal/service"
+	"go/internal/ws/chatroom"
 )
 
 func SetupRouter() *gin.Engine {
@@ -95,6 +96,9 @@ func SetupRouter() *gin.Engine {
 	r.POST("/upload", service.Upload)
 	//获取图片
 	r.GET("/getImage", service.Image)
+
+	//websocket
+	r.GET("/ws/socket", chatroom.Websocket.Handle())
 
 	return r
 }

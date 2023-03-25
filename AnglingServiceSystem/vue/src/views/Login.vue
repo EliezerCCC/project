@@ -177,6 +177,8 @@ export default {
                 alert("登录成功!");
                 sessionStorage.setItem("token", res.data.token);
                 sessionStorage.setItem("identity", res.data.identity);
+                sessionStorage.setItem("user_id", res.data.user_id);
+                sessionStorage.setItem("user_name", res.data.user_name);
                 this.$router.push("/home");
               }
             })

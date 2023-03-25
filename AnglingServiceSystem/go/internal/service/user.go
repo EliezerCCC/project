@@ -15,7 +15,7 @@ func Login(c *gin.Context) {
 
 	fmt.Println("用户登录:", user)
 
-	identity, name, result, err := dao.Login(user)
+	identity, name, id, result, err := dao.Login(user)
 	user.Name = name
 
 	//生成token
@@ -27,9 +27,11 @@ func Login(c *gin.Context) {
 	} else if result == "登录成功" {
 		fmt.Println("登录成功！")
 		c.JSON(200, gin.H{
-			"result":   result,
-			"identity": identity,
-			"token":    token,
+			"result":    result,
+			"identity":  identity,
+			"token":     token,
+			"user_id":   id,
+			"user_name": name,
 		})
 	} else {
 		fmt.Println("登录失败！")
