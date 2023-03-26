@@ -26,8 +26,7 @@
       <el-menu-item index="5" @click="ToAnglingSite()">钓场</el-menu-item>
       <el-menu-item index="6" @click="ToRecommend()">推荐</el-menu-item>
       <el-menu-item index="7" @click="ToMap()">地图</el-menu-item>
-      <el-menu-item index="8" @click="ToChatRoom()">聊天室</el-menu-item>
-      <el-menu-item index="9" @click="ToPerson()">个人信息</el-menu-item>
+      <el-menu-item index="8" @click="ToChatRoom()">聊天室</el-menu-item></el-menu-item>
       <el-menu-item index="10" @click="ToNoticeManager()" v-if="vis"
         >管理界面</el-menu-item
       >

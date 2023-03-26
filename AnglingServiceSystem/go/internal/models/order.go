@@ -8,5 +8,7 @@ type Order struct {
 	BuyerID     string    `json:"buyer_id"`
 	CommodityID int64     `json:"commodity_id"`
 	Price       float64   `json:"price"`
+	Status      string    `json:"status"`
+	Address     string    `json:"address"`
 	CreateTime  time.Time `json:"create_time" gorm:"column:create_time"`
 }

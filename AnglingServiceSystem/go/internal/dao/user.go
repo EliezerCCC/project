@@ -6,7 +6,7 @@ import (
 )
 
 // 用户登录 Login
-func Login(user1 models.User) (identity string, name string, id string, result string, err error) {
+func Login(user1 models.User) (identity string, name string, id string, result string, status string, err error) {
 	user := user1
 	err = util.MysqlDB.First(&user).Error
 
@@ -14,6 +14,7 @@ func Login(user1 models.User) (identity string, name string, id string, result s
 		identity = user.Identity
 		name = user.Name
 		id = user.ID
+		status = user.Status
 		result = "登录成功"
 	} else {
 		result = "账号或密码错误"

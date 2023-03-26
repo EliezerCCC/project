@@ -26,6 +26,9 @@
           <el-menu-item index="4" @click="searchType('钓鱼菜谱')"
             >钓鱼菜谱</el-menu-item
           >
+          <el-menu-item index="5" @click="personCollect()"
+            >我的收藏</el-menu-item
+          >
         </el-menu>
       </el-aside>
       <el-main>
@@ -39,6 +42,9 @@
           </el-input>
           <el-button type="info" style="margin-left: 20px" @click="search()"
             >搜索</el-button
+          >
+          <el-button type="info" style="margin-left: 20px" @click=""
+            >我的收藏</el-button
           >
         </el-row>
         <el-row>
@@ -148,6 +154,30 @@ export default {
   },
   watch: {},
   methods: {
+    personCollect() {
+      this.axios({
+        method: "GET",
+        url: this.global.apiUrl + "/personCollect",
+        headers: {
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          if (
+            res.data.code == 2003 ||
+            res.data.code == 2004 ||
+            res.data.code == 2005
+          ) {
+            alert("请先完成登录!");
+            this.$router.push("/");
+          } else {
+            sessionStorage.setItem("token", res.data.token);
+            this.info_list_vis = res.data.info_list;
+          }
+        })
+        .catch((err) => {});
+    },
     toDetailInfo(row) {
       this.$router.push({
         name: "detailedinfo",

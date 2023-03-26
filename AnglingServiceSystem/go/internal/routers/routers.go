@@ -48,6 +48,15 @@ func SetupRouter() *gin.Engine {
 	//删除资讯
 	r.POST("/deleteInfo", middleware.JWTAuthMiddleware(), service.DeleteInfo)
 
+	//添加收藏
+	r.POST("/addCollect", middleware.JWTAuthMiddleware(), service.AddCollect)
+	//删除收藏
+	r.POST("/deleteCollect", middleware.JWTAuthMiddleware(), service.DeleteCollect)
+	//查询收藏
+	r.POST("/isCollect", middleware.JWTAuthMiddleware(), service.IsCollect)
+	//获取个人收藏
+	r.GET("/personCollect", middleware.JWTAuthMiddleware(), service.PersonCollect)
+
 	//发布商品
 	r.POST("/addCommodity", middleware.JWTAuthMiddleware(), service.AddCommodity)
 	//获取所有商品
@@ -58,6 +67,9 @@ func SetupRouter() *gin.Engine {
 	r.POST("/updateCommodity", middleware.JWTAuthMiddleware(), service.UpdateCommodity)
 	//删除商品
 	r.POST("/deleteCommodity", middleware.JWTAuthMiddleware(), service.DeleteCommodity)
+
+	//支付接口
+	r.POST("/pay", middleware.JWTAuthMiddleware(), service.Pay)
 
 	//发布钓场
 	r.POST("/addAnglingSite", middleware.JWTAuthMiddleware(), service.AddAnglingSite)
@@ -91,6 +103,11 @@ func SetupRouter() *gin.Engine {
 	r.POST("/updatePost", middleware.JWTAuthMiddleware(), service.UpdatePost)
 	//删除帖子
 	r.POST("/deletePost", middleware.JWTAuthMiddleware(), service.DeletePost)
+
+	//发表评论
+	r.POST("/addComment", middleware.JWTAuthMiddleware(), service.AddComment)
+	//获取评论
+	r.POST("/getComment", middleware.JWTAuthMiddleware(), service.GetComment)
 
 	//上传图片
 	r.POST("/upload", service.Upload)

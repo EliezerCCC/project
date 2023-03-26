@@ -173,6 +173,11 @@ export default {
             .then((res) => {
               if (res.data.result == "账号或密码错误") {
                 alert("账号或密码错误!");
+              } else if (res.data.user_status == "冻结") {
+                this.$alert("账号已冻结，请联系管理员", "警告", {
+                  confirmButtonText: "确定",
+                  callback: (action) => {},
+                });
               } else {
                 alert("登录成功!");
                 sessionStorage.setItem("token", res.data.token);

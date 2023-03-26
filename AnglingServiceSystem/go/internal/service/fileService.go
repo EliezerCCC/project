@@ -25,7 +25,10 @@ func Upload(c *gin.Context) {
 
 func Image(c *gin.Context) {
 	//显示图片的方法
-	imageName := c.Query("imageName")     //截取get请求参数，也就是图片的路径，可是使用绝对路径，也可使用相对路径
-	file, _ := ioutil.ReadFile(imageName) //把要显示的图片读取到变量中
-	c.Writer.WriteString(string(file))    //关键一步，写给前端
+	imageName := c.Query("imageName")       //截取get请求参数，也就是图片的路径，可是使用绝对路径，也可使用相对路径
+	file, err := ioutil.ReadFile(imageName) //把要显示的图片读取到变量中
+	if err != nil {
+		file, _ = ioutil.ReadFile("./web/static/images/tupian.jpg")
+	}
+	c.Writer.WriteString(string(file)) //关键一步，写给前端
 }

@@ -157,6 +157,7 @@
           </el-row>
           <span slot="footer" class="dialog-footer">
             <el-button @click="Cancel()">取 消</el-button>
+            <el-button type="primary" @click="Buy()">购买</el-button>
           </span>
         </el-dialog>
       </el-main>
@@ -182,6 +183,7 @@ export default {
         status: "",
       },
       DetailedCommodityVisible: false,
+      pay_list: [],
     };
   },
   created() {
@@ -209,6 +211,17 @@ export default {
               i
             ].create_time.slice(0, 10);
           }
+
+          let newListData = []; // 用于存放搜索出来数据的新数组
+          //filter 过滤数组
+          this.commodity_list.filter((item) => {
+            // newListData中 没有查询的内容，就添加到newListData中
+            if (item.status.toLowerCase().indexOf("上架") !== -1) {
+              newListData.push(item);
+            }
+          });
+
+          this.commodity_list = newListData;
           this.commodity_list_vis = this.commodity_list;
         }
       })
@@ -216,6 +229,42 @@ export default {
   },
   watch: {},
   methods: {
+    Buy() {
+      this.$confirm("确认购买此商品", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.pay_list = [];
+          this.pay_list.push(this.detailedCommodity);
+          console.log(this.pay_list);
+          this.axios({
+            method: "POST",
+            data: { pay_list: this.pay_list },
+            url: this.global.apiUrl + "/pay",
+            headers: {
+              Authorization: "Bearer " + sessionStorage.getItem("token"),
+            },
+          })
+            .then((res) => {
+              console.log(res);
+              if (
+                res.data.code == 2003 ||
+                res.data.code == 2004 ||
+                res.data.code == 2005
+              ) {
+                alert("请先完成登录!");
+                this.$router.push("/");
+              } else {
+                console.log(res.data.pay_url);
+                // window.location.href = res.data.pay_url;
+              }
+            })
+            .catch((err) => {});
+        })
+        .catch(() => {});
+    },
     Cancel() {
       this.DetailedCommodityVisible = false;
     },
