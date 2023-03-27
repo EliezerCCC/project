@@ -32,10 +32,10 @@ func Pay(c *gin.Context) {
 
 	var p = alipay.TradePagePay{}
 	p.NotifyURL = "https://www.baidu.com"
-	p.ReturnURL = "https://www.baidu.com" //订单付款后跳转的网址页面
-	p.Subject = fmt.Sprintf("123")        //付款标题
-	p.OutTradeNo = "1"                    //商家订单号
-	p.TotalAmount = "10.00"               //价格
+	p.ReturnURL = "http://localhost:8080/#/shop" //订单付款后跳转的网址页面
+	p.Subject = fmt.Sprintf("123")               //付款标题
+	p.OutTradeNo = "999998"                      //商家订单号
+	p.TotalAmount = "66.66"                      //价格
 	p.ProductCode = "FAST_INSTANT_TRADE_PAY"
 
 	url, err := client.TradePagePay(p)

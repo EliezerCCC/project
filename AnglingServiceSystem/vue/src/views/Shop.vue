@@ -49,6 +49,15 @@
           <el-button type="info" style="margin-left: 20px" @click="search()"
             >搜索</el-button
           >
+          <el-button
+            type="info"
+            style="margin-left: 20px"
+            @click="MyAddressVisible = true"
+            >我的地址</el-button
+          >
+          <el-button type="info" style="margin-left: 20px" @click=""
+            >我的订单</el-button
+          >
         </el-row>
         <el-row>
           <el-col
@@ -160,19 +169,135 @@
             <el-button type="primary" @click="Buy()">购买</el-button>
           </span>
         </el-dialog>
+
+        <el-dialog
+          title="我的地址"
+          :visible.sync="MyAddressVisible"
+          width="60%"
+          :before-close="handleClose"
+        >
+          <el-table :data="address_list" stripe height="500">
+            <el-table-column prop="province" label="省份" width="100">
+              <template slot-scope="scope">
+                <label>{{ CodeToText[parseInt(scope.row.province)] }}</label>
+              </template>
+            </el-table-column>
+            <el-table-column prop="city" label="城市" width="100">
+              <template slot-scope="scope">
+                <label>{{ CodeToText[parseInt(scope.row.city)] }}</label>
+              </template>
+            </el-table-column>
+            <el-table-column prop="area" label="区域" width="100">
+              <template slot-scope="scope">
+                <label>{{ CodeToText[parseInt(scope.row.area)] }}</label>
+              </template>
+            </el-table-column>
+            <el-table-column prop="detail" label="详细地址" width="350">
+              <template slot-scope="scope">
+                <label>{{ scope.row.detail }}</label>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="name" label="姓名" width="180">
+            </el-table-column>
+            <el-table-column prop="phone" label="电话" width="180">
+            </el-table-column>
+            <el-table-column label="操作" width="100">
+              <template slot-scope="scope">
+                <el-button type="danger" @click="DeleteAddressVis(scope.row)"
+                  >删除</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
+          <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="AddAddressVisible = true"
+              >添加地址</el-button
+            >
+            <el-button @click="MyAddressVisible = false">取 消</el-button>
+          </span>
+        </el-dialog>
+
+        <el-dialog
+          title="提示"
+          :visible.sync="DeleteAddressVisible"
+          width="30%"
+          :before-close="handleClose"
+        >
+          <span>是否确认删除地址</span>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="DeleteAddressVisible = false">取 消</el-button>
+            <el-button type="primary" @click="DeleteAddress()">确 定</el-button>
+          </span>
+        </el-dialog>
+
+        <el-dialog
+          title="添加地址"
+          :visible.sync="AddAddressVisible"
+          width="30%"
+          :before-close="handleClose"
+        >
+          <el-row>
+            <el-cascader
+              size="large"
+              :options="options"
+              v-model="selectedOptions"
+              @change="handleChange"
+            >
+            </el-cascader>
+          </el-row>
+          <el-row style="margin-top: 15px">
+            <label>详细地址</label>
+            <el-input
+              style="margin-top: 15px"
+              v-model="detailAddress"
+              placeholder="请输入内容"
+            ></el-input>
+          </el-row>
+          <el-row style="margin-top: 15px">
+            <label>收货人姓名</label>
+            <el-input
+              style="margin-top: 15px"
+              v-model="nameAddress"
+              placeholder="请输入内容"
+            ></el-input>
+          </el-row>
+          <el-row style="margin-top: 15px">
+            <label>电话</label>
+            <el-input
+              style="margin-top: 15px"
+              v-model="phoneAddress"
+              placeholder="请输入内容"
+            ></el-input>
+          </el-row>
+          <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="AddAddress()">添加</el-button>
+            <el-button @click="AddAddressVisible = false">取 消</el-button>
+          </span>
+        </el-dialog>
       </el-main>
     </el-container>
   </div>
 </template>
+
 <script>
+import { regionData, CodeToText } from "element-china-area-data";
 export default {
+  inject: ["reload"],
   data() {
     return {
+      CodeToText,
+      nameAddress: "",
+      phoneAddress: "",
+      detailAddress: "",
+      options: regionData,
+      selectedOptions: [],
       currentPage: 1,
       pagesize: 10,
       searchPlhText: "",
       commodity_list: [],
       commodity_list_vis: [],
+      address_list: [],
       detailedCommodity: {
         id: "",
         name: "",
@@ -182,6 +307,10 @@ export default {
         type: "",
         status: "",
       },
+      deleteAddress: { id: "" },
+      DeleteAddressVisible: false,
+      AddAddressVisible: false,
+      MyAddressVisible: false,
       DetailedCommodityVisible: false,
       pay_list: [],
     };
@@ -226,6 +355,32 @@ export default {
         }
       })
       .catch((err) => {});
+
+    this.axios({
+      method: "POST",
+      url: this.global.apiUrl + "/getAddress",
+      data: {
+        id: sessionStorage.getItem("user_id"),
+      },
+      headers: {
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        if (
+          res.data.code == 2003 ||
+          res.data.code == 2004 ||
+          res.data.code == 2005
+        ) {
+          alert("请先完成登录!");
+          this.$router.push("/");
+        } else {
+          sessionStorage.setItem("token", res.data.token);
+          this.address_list = res.data.address_list;
+        }
+      })
+      .catch((err) => {});
   },
   watch: {},
   methods: {
@@ -258,12 +413,48 @@ export default {
                 this.$router.push("/");
               } else {
                 console.log(res.data.pay_url);
-                // window.location.href = res.data.pay_url;
+                window.location.href = res.data.pay_url;
               }
             })
             .catch((err) => {});
         })
         .catch(() => {});
+    },
+
+    DeleteAddress() {
+      this.axios({
+        url: this.global.apiUrl + "/deleteAddress",
+        data: this.deleteAddress,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+          if (
+            res.data.code == 2003 ||
+            res.data.code == 2004 ||
+            res.data.code == 2005
+          ) {
+            alert("请先完成登录!");
+            this.$router.push("/");
+          } else {
+            sessionStorage.setItem("token", res.data.token);
+            this.reload();
+            alert("删除成功!");
+            (this.DeleteAddressVisible = false), (this.deleteAddress.id = "");
+          }
+        })
+        .catch((Error) => {
+          console.log(Error);
+        });
+    },
+
+    DeleteAddressVis(row) {
+      this.deleteAddress.id = row.id;
+      this.DeleteAddressVisible = true;
     },
     Cancel() {
       this.DetailedCommodityVisible = false;
@@ -285,6 +476,55 @@ export default {
         id +
         ".jpg"
       );
+    },
+    AddAddress() {
+      if (
+        this.detailAddress == "" ||
+        this.nameAddress == "" ||
+        this.phoneAddress == "" ||
+        this.selectedOptions.length != 3
+      ) {
+        alert("内容不能为空!");
+      } else {
+        this.axios({
+          url: this.global.apiUrl + "/addAddress",
+          data: {
+            name: this.nameAddress,
+            phone: this.phoneAddress,
+            detail: this.detailAddress,
+            province: this.selectedOptions[0],
+            city: this.selectedOptions[1],
+            area: this.selectedOptions[2],
+          },
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + sessionStorage.getItem("token"),
+          },
+        })
+          .then((res) => {
+            console.log(res.data);
+            if (
+              res.data.code == 2003 ||
+              res.data.code == 2004 ||
+              res.data.code == 2005
+            ) {
+              alert("请先完成登录!");
+              this.$router.push("/");
+            } else {
+              sessionStorage.setItem("token", res.data.token);
+              this.reload();
+              alert("添加成功!");
+              (this.AddAddressVisible = false),
+                (this.nameAddress = ""),
+                (this.detailAddress = ""),
+                (this.phoneAddress = "");
+            }
+          })
+          .catch((Error) => {
+            console.log(Error);
+          });
+      }
     },
     search() {
       if (this.searchPlhText == "") {
@@ -334,6 +574,9 @@ export default {
     handleCurrentChange: function (currentPage) {
       this.currentPage = currentPage;
       console.log(this.currentPage); //点击第几页
+    },
+    handleChange(value) {
+      console.log(value);
     },
   },
 };

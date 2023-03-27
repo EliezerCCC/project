@@ -109,6 +109,13 @@ func SetupRouter() *gin.Engine {
 	//获取评论
 	r.POST("/getComment", middleware.JWTAuthMiddleware(), service.GetComment)
 
+	//添加地址
+	r.POST("/addAddress", middleware.JWTAuthMiddleware(), service.AddAddress)
+	//获取地址
+	r.POST("/getAddress", middleware.JWTAuthMiddleware(), service.GetAddress)
+	//删除地址
+	r.POST("/deleteAddress", middleware.JWTAuthMiddleware(), service.DeleteAddress)
+
 	//上传图片
 	r.POST("/upload", service.Upload)
 	//获取图片

@@ -17,6 +17,12 @@
           <el-button type="info" style="margin-left: 20px" @click="search()"
             >搜索</el-button
           >
+          <el-button
+            type="info"
+            style="margin-left: 20px"
+            @click="MyPostVisible = true"
+            >我的帖子</el-button
+          >
         </el-row>
 
         <el-row style="margin-left: 40px">
@@ -119,6 +125,54 @@
             <el-button type="primary" @click="AddPost()">确 定</el-button>
           </span>
         </el-dialog>
+
+        <el-dialog
+          title="我的帖子"
+          :visible.sync="MyPostVisible"
+          width="60%"
+          :before-close="handleClose"
+        >
+          <el-table :data="my_post_list">
+            <el-table-column prop="title" label="标题" width="150">
+            </el-table-column>
+            <el-table-column prop="image" label="主图" width="200">
+              <template slot-scope="scope">
+                <img
+                  :src="GetPostImangePath(scope.row.id)"
+                  style="width: 50px"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column prop="create_time" label="发布时间" width="300">
+            </el-table-column>
+            <el-table-column label="操作" width="300">
+              <template slot-scope="scope"
+                ><el-button type="success" @click="toDetail(scope.row)"
+                  >查看</el-button
+                >
+                <el-button type="danger" @click="DeletePostVis(scope.row)"
+                  >删除</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="MyPostVisible = false">取 消</el-button>
+          </span>
+        </el-dialog>
+
+        <el-dialog
+          title="提示"
+          :visible.sync="DeletePostVisible"
+          width="30%"
+          :before-close="handleClose"
+        >
+          <span>是否确认删除</span>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="DeletePostVisible = false">取 消</el-button>
+            <el-button type="primary" @click="DeletePost()">确 定</el-button>
+          </span>
+        </el-dialog>
       </el-main>
     </el-container>
   </div>
@@ -129,16 +183,22 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      MyPostVisible: false,
       currentPage: 1,
       pagesize: 16,
       searchPlhText: "",
       post_list: [],
       post_list_vis: [],
+      my_post_list: [],
       post: {
         title: "",
         content: "",
       },
+      deletePost: {
+        id: "",
+      },
       AddPostVisible: false,
+      DeletePostVisible: false,
     };
   },
   created() {
@@ -166,6 +226,11 @@ export default {
               0,
               10
             );
+            if (
+              this.post_list[i].user_id == sessionStorage.getItem("user_id")
+            ) {
+              this.my_post_list.push(this.post_list[i]);
+            }
           }
           this.post_list_vis = this.post_list;
         }
@@ -174,6 +239,36 @@ export default {
   },
   watch: {},
   methods: {
+    DeletePost() {
+      this.axios({
+        url: this.global.apiUrl + "/deletePost",
+        data: this.deletePost,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+          if (
+            res.data.code == 2003 ||
+            res.data.code == 2004 ||
+            res.data.code == 2005
+          ) {
+            alert("请先完成登录!");
+            this.$router.push("/");
+          } else {
+            sessionStorage.setItem("token", res.data.token);
+            this.reload();
+            alert("删除成功!");
+            (this.DeletePostVisible = false), (this.deletePost.id = "");
+          }
+        })
+        .catch((Error) => {
+          console.log(Error);
+        });
+    },
     Cancel() {
       this.AddPostVisible = false;
     },
@@ -264,12 +359,21 @@ export default {
     AudioAndVideoPath: function () {
       return this.global.apiUrl + "/upload";
     },
-
+    toDetail(row) {
+      this.$router.push({
+        name: "detailedpost",
+        query: { param: row },
+      });
+    },
     toDetailPost(row) {
       this.$router.push({
         name: "detailedpost",
         query: { param: row },
       });
+    },
+    DeletePostVis(row) {
+      this.deletePost.id = row.id;
+      this.DeletePostVisible = true;
     },
     GetPostImangePath: function (id) {
       return (

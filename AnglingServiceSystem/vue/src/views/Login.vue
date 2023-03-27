@@ -1,6 +1,5 @@
 <template>
   <div class="loginbody">
-    input
     <div class="logindata">
       <div class="logintext">
         <h2>Welcome</h2>
