@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/smartwalle/alipay/v3"
+	"go/internal/dao"
 	"go/internal/models"
+	"time"
 )
 
 var (
@@ -21,21 +23,25 @@ type PayList struct {
 func Pay(c *gin.Context) {
 
 	client.LoadAliPayPublicKey("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqqpXQTgAzQvh8OLvFzuf/9KoWFQRccNbFK9waM6flpleOJ0fxmrhqyReyWONViU7FQEbHgksRucTv5DVR9b72+/ypuLapStp00mqITHdpBH5/LyxjXnTSHSmgAiXDPThE/P7N9cbhgc0DRiAnNH8i4MRFVO6ykuHcQnjWONM6zXhW9ELeXMwYEUqo+kTWsf7b2BPUsW+iZnsN0nAQXlAy/VZUsdAkI0sVJKbwIL7ekklt8tjO1zpV0KRTsjEludXJjaZQGS4Br/lhTalmrqjE+Un75OU6IENRDYJCySVQurYahfn8cd1/XCY/eeGkoxmQ5aMvhv1z9JGey/j/zS6EwIDAQAB")
-	var payList PayList
-	amount := 0.0
-	c.ShouldBind(&payList)
+	var order models.Order
+	c.ShouldBind(&order)
+
+	userID, _ := c.Get("user_id")
+	userIDValue, _ := userID.(string)
 	token := c.MustGet("token")
 
-	for _, v := range payList.PayList {
-		amount += v.Price
-	}
+	order.CreateTime = time.Now()
+	order.Status = "已付款"
+	order.UserID = userIDValue
+
+	newOrder, err := dao.AddOrder(order)
 
 	var p = alipay.TradePagePay{}
 	p.NotifyURL = "https://www.baidu.com"
-	p.ReturnURL = "http://localhost:8080/#/shop" //订单付款后跳转的网址页面
-	p.Subject = fmt.Sprintf("123")               //付款标题
-	p.OutTradeNo = "999998"                      //商家订单号
-	p.TotalAmount = "66.66"                      //价格
+	p.ReturnURL = "http://localhost:8080/#/shop"         //订单付款后跳转的网址页面
+	p.Subject = fmt.Sprintf("商城购买")                      //付款标题
+	p.OutTradeNo = fmt.Sprintf("%d", newOrder.ID)        //商家订单号
+	p.TotalAmount = fmt.Sprintf("%.2f", newOrder.Amount) //价格
 	p.ProductCode = "FAST_INSTANT_TRADE_PAY"
 
 	url, err := client.TradePagePay(p)
@@ -54,6 +60,61 @@ func Pay(c *gin.Context) {
 			"result":  "获取成功！",
 			"token":   token,
 			"pay_url": payURL,
+		})
+	}
+}
+
+//GetOrder 获取某用户订单
+func GetOrder(c *gin.Context) {
+	var user models.User
+	c.ShouldBind(&user)
+
+	orderList, err := dao.GetOrder(user.ID)
+	token := c.MustGet("token")
+
+	if err != nil {
+		c.JSON(200, gin.H{"error": err.Error()})
+	} else {
+		c.JSON(200, gin.H{
+			"order_list": orderList,
+			"token":      token,
+		})
+	}
+}
+
+// UpdateOrder 修改订单
+func UpdateOrder(c *gin.Context) {
+	var order models.Order
+	c.ShouldBind(&order)
+	token := c.MustGet("token")
+	fmt.Println("修改订单:", order)
+
+	err := dao.UpdateOrder(order)
+
+	if err != nil {
+		c.JSON(200, gin.H{"error": err.Error()})
+		fmt.Println("修改失败！")
+	} else {
+		fmt.Println("修改成功！")
+		c.JSON(200, gin.H{
+			"result": "修改成功！",
+			"token":  token,
+		})
+	}
+
+}
+
+// GetAllOrder 获取所有订单
+func GetAllOrder(c *gin.Context) {
+	orderList, err := dao.GetAllOrder()
+	token := c.MustGet("token")
+
+	if err != nil {
+		c.JSON(200, gin.H{"error": err.Error()})
+	} else {
+		c.JSON(200, gin.H{
+			"order_list": orderList,
+			"token":      token,
 		})
 	}
 }

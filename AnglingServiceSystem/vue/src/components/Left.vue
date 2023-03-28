@@ -17,6 +17,7 @@
       >
       <el-menu-item index="6" @click="ToForumManager()">论坛管理</el-menu-item>
       <el-menu-item index="7" @click="ToPersonManager()">用户管理</el-menu-item>
+      <el-menu-item index="8" @click="ToOrderManager()">订单管理</el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -49,6 +50,9 @@ export default {
     },
     ToForumManager() {
       this.$router.push("/forummanager");
+    },
+    ToOrderManager() {
+      this.$router.push("/ordermanager");
     },
   },
 };

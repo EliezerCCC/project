@@ -12,6 +12,7 @@ import login from "../views/Login.vue";
 import forummanager from "../views/manager/ForumManager.vue";
 import infomanager from "../views/manager/InfoManager.vue";
 import noticemanager from "../views/manager/NoticeManager.vue";
+import ordermanager from "../views/manager/OrderManager.vue";
 import personmanager from "../views/manager/PersonManager.vue";
 import recommendmanager from "../views/manager/RecommendManager.vue";
 import shopmanager from "../views/manager/ShopManager.vue";
@@ -129,6 +130,11 @@ const routes = [
     path: "/detailedpost",
     name: "detailedpost",
     component: detailedpost,
+  },
+  {
+    path: "/ordermanager",
+    name: "ordermanager",
+    component: ordermanager,
   },
 ];
 

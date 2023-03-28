@@ -55,7 +55,10 @@
             @click="MyAddressVisible = true"
             >我的地址</el-button
           >
-          <el-button type="info" style="margin-left: 20px" @click=""
+          <el-button
+            type="info"
+            style="margin-left: 20px"
+            @click="MyOrderVisible = true"
             >我的订单</el-button
           >
         </el-row>
@@ -166,7 +169,7 @@
           </el-row>
           <span slot="footer" class="dialog-footer">
             <el-button @click="Cancel()">取 消</el-button>
-            <el-button type="primary" @click="Buy()">购买</el-button>
+            <el-button type="primary" @click="BuyVis()">购买</el-button>
           </span>
         </el-dialog>
 
@@ -275,6 +278,68 @@
             <el-button @click="AddAddressVisible = false">取 消</el-button>
           </span>
         </el-dialog>
+
+        <el-dialog
+          title="提示"
+          :visible.sync="ShopVisible"
+          width="50%"
+          :before-close="handleClose"
+        >
+          <el-row> <span>请选择收货地址</span> </el-row>
+
+          <el-select
+            v-model="ConAddress"
+            placeholder="请选择"
+            style="margin-top: 15px; width: 800px"
+          >
+            <el-option
+              v-for="item in optionsAddress"
+              :label="item"
+              :value="item"
+            >
+            </el-option>
+          </el-select>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="ShopVisible = false">取 消</el-button>
+            <el-button type="primary" @click="Buy()">确 定</el-button>
+          </span>
+        </el-dialog>
+
+        <el-dialog
+          title="我的订单"
+          :visible.sync="MyOrderVisible"
+          width="60%"
+          :before-close="handleClose"
+        >
+          <el-table :data="order_list" stripe height="500">
+            <el-table-column prop="commodity_name" label="商品名" width="260">
+              <template slot-scope="scope">
+                <label>{{ scope.row.commodity_name }}</label>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="image" label="图片" width="100">
+              <template slot-scope="scope">
+                <img
+                  :src="GetImangePath(scope.row.commodity_id)"
+                  style="width: 50px"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column prop="amount" label="价格" width="100">
+            </el-table-column>
+            <el-table-column prop="address" label="收货信息" width="450">
+              <template slot-scope="scope">
+                <label>{{ scope.row.address }}</label>
+              </template>
+            </el-table-column>
+            <el-table-column prop="status" label="状态" width="100">
+            </el-table-column>
+          </el-table>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="MyOrderVisible = false">取 消</el-button>
+          </span>
+        </el-dialog>
       </el-main>
     </el-container>
   </div>
@@ -286,6 +351,7 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      optionsAddress: [],
       CodeToText,
       nameAddress: "",
       phoneAddress: "",
@@ -298,6 +364,7 @@ export default {
       commodity_list: [],
       commodity_list_vis: [],
       address_list: [],
+      order_list: [],
       detailedCommodity: {
         id: "",
         name: "",
@@ -307,12 +374,21 @@ export default {
         type: "",
         status: "",
       },
+      ConAddress: "",
       deleteAddress: { id: "" },
+      MyOrderVisible: false,
       DeleteAddressVisible: false,
       AddAddressVisible: false,
       MyAddressVisible: false,
       DetailedCommodityVisible: false,
+      ShopVisible: false,
       pay_list: [],
+      order: {
+        id: "",
+        commodity_id: "",
+        amount: "",
+        address: {},
+      },
     };
   },
   created() {
@@ -381,9 +457,53 @@ export default {
         }
       })
       .catch((err) => {});
+
+    this.axios({
+      method: "POST",
+      url: this.global.apiUrl + "/getOrder",
+      data: {
+        id: sessionStorage.getItem("user_id"),
+      },
+      headers: {
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        if (
+          res.data.code == 2003 ||
+          res.data.code == 2004 ||
+          res.data.code == 2005
+        ) {
+          alert("请先完成登录!");
+          this.$router.push("/");
+        } else {
+          sessionStorage.setItem("token", res.data.token);
+          this.order_list = res.data.order_list;
+        }
+      })
+      .catch((err) => {});
   },
   watch: {},
   methods: {
+    BuyVis() {
+      this.ConAddress = "";
+      this.optionsAddress = [];
+      for (let i = 0; i < this.address_list.length; i++) {
+        let str =
+          CodeToText[parseInt(this.address_list[i].province)] +
+          CodeToText[parseInt(this.address_list[i].city)] +
+          CodeToText[parseInt(this.address_list[i].area)] +
+          this.address_list[i].detail +
+          " " +
+          this.address_list[i].name +
+          " " +
+          this.address_list[i].phone;
+        this.optionsAddress.push(str);
+      }
+      this.ShopVisible = true;
+    },
+
     Buy() {
       this.$confirm("确认购买此商品", "提示", {
         confirmButtonText: "确定",
@@ -391,32 +511,38 @@ export default {
         type: "warning",
       })
         .then(() => {
-          this.pay_list = [];
-          this.pay_list.push(this.detailedCommodity);
-          console.log(this.pay_list);
-          this.axios({
-            method: "POST",
-            data: { pay_list: this.pay_list },
-            url: this.global.apiUrl + "/pay",
-            headers: {
-              Authorization: "Bearer " + sessionStorage.getItem("token"),
-            },
-          })
-            .then((res) => {
-              console.log(res);
-              if (
-                res.data.code == 2003 ||
-                res.data.code == 2004 ||
-                res.data.code == 2005
-              ) {
-                alert("请先完成登录!");
-                this.$router.push("/");
-              } else {
-                console.log(res.data.pay_url);
-                window.location.href = res.data.pay_url;
-              }
+          if (this.ConAddress == "") {
+            alert("地址不能为空!");
+          } else {
+            this.axios({
+              method: "POST",
+              data: {
+                commodity_name: this.detailedCommodity.name,
+                commodity_id: this.detailedCommodity.id,
+                amount: this.detailedCommodity.price,
+                address: this.ConAddress,
+              },
+              url: this.global.apiUrl + "/pay",
+              headers: {
+                Authorization: "Bearer " + sessionStorage.getItem("token"),
+              },
             })
-            .catch((err) => {});
+              .then((res) => {
+                console.log(res);
+                if (
+                  res.data.code == 2003 ||
+                  res.data.code == 2004 ||
+                  res.data.code == 2005
+                ) {
+                  alert("请先完成登录!");
+                  this.$router.push("/");
+                } else {
+                  console.log(res.data.pay_url);
+                  window.location.href = res.data.pay_url;
+                }
+              })
+              .catch((err) => {});
+          }
         })
         .catch(() => {});
     },
@@ -566,6 +692,14 @@ export default {
 
         this.commodity_list_vis = newListData;
       }
+    },
+    GetImangePath: function (id) {
+      return (
+        this.global.apiUrl +
+        "/getImage?imageName=./web/static/images/commodity" +
+        id +
+        ".jpg"
+      );
     },
     handleSizeChange: function (size) {
       this.pagesize = size;

@@ -70,6 +70,12 @@ func SetupRouter() *gin.Engine {
 
 	//支付接口
 	r.POST("/pay", middleware.JWTAuthMiddleware(), service.Pay)
+	//获取某用户订单
+	r.POST("/getOrder", middleware.JWTAuthMiddleware(), service.GetOrder)
+	//修改某订单
+	r.POST("/updateOrder", middleware.JWTAuthMiddleware(), service.UpdateOrder)
+	//获取所有订单
+	r.GET("/getAllOrder", middleware.JWTAuthMiddleware(), service.GetAllOrder)
 
 	//发布钓场
 	r.POST("/addAnglingSite", middleware.JWTAuthMiddleware(), service.AddAnglingSite)
