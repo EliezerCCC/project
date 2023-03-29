@@ -17,6 +17,7 @@
           letter-spacing: 20px;
           float: right;
         "
+        @click="ToLogin()"
         >垂钓服务中心</el-menu-item
       >
       <el-menu-item index="1" @click="ToHome()">首页</el-menu-item>
@@ -75,6 +76,9 @@ export default {
     ToNoticeManager() {
       this.$router.push("/noticemanager");
     },
+    ToLogin(){
+      window.open("http://localhost:8080/");
+    }
   },
   created: function () {
     if (sessionStorage.getItem("identity") == "administrator") {

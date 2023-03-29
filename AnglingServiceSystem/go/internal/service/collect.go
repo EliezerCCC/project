@@ -96,9 +96,10 @@ func PersonCollect(c *gin.Context) {
 	collectList, err := dao.PersonCollect(userIDValue)
 
 	for _, v := range collectList {
-		info1, _ := dao.GetOneInfo(int(v.InfoID))
-
-		infoList = append(infoList, info1)
+		info1, err := dao.GetOneInfo(int(v.InfoID))
+		if err == nil {
+			infoList = append(infoList, info1)
+		}
 	}
 
 	token := c.MustGet("token")

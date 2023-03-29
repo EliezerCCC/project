@@ -169,7 +169,12 @@
           </el-row>
           <span slot="footer" class="dialog-footer">
             <el-button @click="Cancel()">取 消</el-button>
-            <el-button type="primary" @click="BuyVis()">购买</el-button>
+            <el-button
+              v-if="detailedCommodity.amount > 0"
+              type="primary"
+              @click="BuyVis()"
+              >购买</el-button
+            >
           </span>
         </el-dialog>
 

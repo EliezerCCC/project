@@ -90,9 +90,11 @@
           </el-row>
           <el-row style="margin-top: 15px">
             <el-tag type="info">信息</el-tag>
-            <el-tag style="margin-left: 20px">{{
+          </el-row>
+          <el-row style="margin-top: 15px">
+            <span style="margin-left: 20px">{{
               detailedRecommend.fish_info
-            }}</el-tag>
+            }}</span>
           </el-row>
           <el-row style="margin-top: 15px">
             <el-tag type="info">推荐信息</el-tag>

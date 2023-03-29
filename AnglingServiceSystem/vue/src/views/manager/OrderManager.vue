@@ -95,7 +95,7 @@
           </el-table-column>
           <el-table-column prop="commodity_name" label="商品名" width="260">
           </el-table-column>
-          <el-table-column prop="commodity_name" label="商品id" width="80">
+          <el-table-column prop="commodity_id" label="商品id" width="80">
           </el-table-column>
           <el-table-column prop="image" label="图片" width="100">
             <template slot-scope="scope">
@@ -266,11 +266,10 @@ export default {
         let newListData = []; // 用于存放搜索出来数据的新数组
         if (_search) {
           //filter 过滤数组
-          this.user_list.filter((item) => {
+          this.order_list.filter((item) => {
             // newListData中 没有查询的内容，就添加到newListData中
             if (
               item.user_id.toLowerCase().indexOf(_search) !== -1 ||
-              item.id.toLowerCase().indexOf(_search) !== -1 ||
               item.commodity_name.toLowerCase().indexOf(_search) !== -1
             ) {
               newListData.push(item);
@@ -280,6 +279,7 @@ export default {
         //查询后的表格 赋值过滤后的数据
         this.order_list_vis = newListData;
       }
+      console.log(newListData);
     },
     handleSizeChange: function (size) {
       this.pagesize = size;

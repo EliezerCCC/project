@@ -30,6 +30,10 @@ func Pay(c *gin.Context) {
 	userIDValue, _ := userID.(string)
 	token := c.MustGet("token")
 
+	commodity, _ := dao.GetOneCommodity(int(order.CommodityID))
+	commodity.Amount -= 1
+	_ = dao.UpdateCommodity(*commodity)
+
 	order.CreateTime = time.Now()
 	order.Status = "已付款"
 	order.UserID = userIDValue
