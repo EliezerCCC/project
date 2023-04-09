@@ -18,6 +18,7 @@ import recommendmanager from "../views/manager/RecommendManager.vue";
 import shopmanager from "../views/manager/ShopManager.vue";
 import sitemanager from "../views/manager/SiteManager.vue";
 import map from "../views/Map.vue";
+import sitemap from "../views/SiteMap.vue";
 import person from "../views/Person.vue";
 import recommend from "../views/Recommend.vue";
 import shop from "../views/Shop.vue";
@@ -30,6 +31,11 @@ const routes = [
     path: "/test",
     name: "test",
     component: test,
+  },
+  {
+    path: "/sitemap",
+    name: "sitemap",
+    component: sitemap,
   },
   {
     path: "/",

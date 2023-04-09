@@ -20,15 +20,15 @@
         @click="ToLogin()"
         >垂钓服务中心</el-menu-item
       >
-      <el-menu-item index="1" @click="ToHome()">首页</el-menu-item>
-      <el-menu-item index="2" @click="ToInfo()">资讯</el-menu-item>
-      <el-menu-item index="3" @click="ToShop()">商城</el-menu-item>
-      <el-menu-item index="4" @click="ToForum()">论坛</el-menu-item>
-      <el-menu-item index="5" @click="ToAnglingSite()">钓场</el-menu-item>
-      <el-menu-item index="6" @click="ToRecommend()">推荐</el-menu-item>
-      <el-menu-item index="7" @click="ToMap()">地图</el-menu-item>
-      <el-menu-item index="8" @click="ToChatRoom()">聊天室</el-menu-item></el-menu-item>
-      <el-menu-item index="10" @click="ToNoticeManager()" v-if="vis"
+      <el-menu-item index="1" @click="ToHome()" style="font-size: 25px;">首页</el-menu-item>
+      <el-menu-item index="2" @click="ToInfo()" style="font-size: 25px;">资讯</el-menu-item>
+      <el-menu-item index="3" @click="ToShop()" style="font-size: 25px;">商城</el-menu-item>
+      <el-menu-item index="4" @click="ToForum()" style="font-size: 25px;">论坛</el-menu-item>
+      <el-menu-item index="5" @click="ToAnglingSite()" style="font-size: 25px;">钓场</el-menu-item>
+      <el-menu-item index="6" @click="ToRecommend()" style="font-size: 25px;">推荐</el-menu-item>
+      <el-menu-item index="7" @click="ToMap()" style="font-size: 25px;">地图</el-menu-item>
+      <el-menu-item index="8" @click="ToChatRoom()" style="font-size: 25px;">聊天室</el-menu-item></el-menu-item>
+      <el-menu-item index="10" @click="ToNoticeManager()" v-if="vis" style="font-size: 25px;"
         >管理界面</el-menu-item
       >
     </el-menu>

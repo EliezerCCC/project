@@ -23,7 +23,7 @@
         <el-dialog
           title="管理用户"
           :visible.sync="EditUserVisible"
-          width="60%"
+          width="30%"
           :before-close="handleClose"
         >
           <el-row style="margin-top: 15px">
@@ -106,7 +106,7 @@
           :page-size="pagesize"
           background
           layout="prev, pager, next"
-          :total="1000"
+          :total="pagetotal"
         >
         </el-pagination>
       </el-main>
@@ -119,6 +119,7 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      pagetotal:1000,
       imageUrl: "",
       currentPage: 1,
       pagesize: 10,
@@ -188,6 +189,7 @@ export default {
           sessionStorage.setItem("token", res.data.token);
           this.user_list = res.data.user_list;
           this.user_list_vis = this.user_list;
+          this.pagetotal = this.user_list_vis.length
         }
       })
       .catch((err) => {});
@@ -255,6 +257,7 @@ export default {
     search() {
       if (this.searchPlhText == "") {
         this.user_list_vis = this.user_list;
+        this.pagetotal = this.user_list_vis.length
       } else {
         //获取到查询的值，并使用toLowerCase():把字符串转换成小写，让模糊查询更加清晰
         let _search = this.searchPlhText.toLowerCase();
@@ -270,6 +273,7 @@ export default {
         }
         //查询后的表格 赋值过滤后的数据
         this.user_list_vis = newListData;
+        this.pagetotal = this.user_list_vis.length
       }
     },
     handleSizeChange: function (size) {

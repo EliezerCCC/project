@@ -1,6 +1,6 @@
 <template>
   <div class="loginbody">
-    <div class="logindata">
+    <div class="logindata" style="margin-top: 200px">
       <div class="logintext">
         <h2>Welcome</h2>
       </div>

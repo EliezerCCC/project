@@ -29,14 +29,14 @@
           :before-close="handleClose"
         >
           <el-row style="margin-top: 15px">
-            <el-tag type="info">标题</el-tag>
+            <el-tag type="info" style="font-size: 18px">标题</el-tag>
             <el-input
               v-model="info.title"
               style="width: 200px; margin-left: 20px"
             ></el-input>
           </el-row style="margin-top: 15px">
           <el-row style="margin-top: 15px">
-            <el-tag type="info">类型</el-tag>
+            <el-tag type="info" style="font-size: 18px">类型</el-tag>
             <el-select
               v-model="info.type"
               placeholder="请选择"
@@ -52,7 +52,7 @@
             </el-select>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">主图</el-tag>
+            <el-tag type="info" style="font-size: 18px">主图</el-tag>
             <el-upload
               class="avatar-uploader"
               :action="AudioAndVideoPath()"
@@ -66,14 +66,14 @@
             </el-upload>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">内容</el-tag>
+            <el-tag type="info" style="font-size: 18px">内容</el-tag>
           </el-row>
           <el-row style="margin-top: 15px">
             <QuillEditor v-model="info.content"></QuillEditor>
           </el-row>
           <span slot="footer" class="dialog-footer">
-            <el-button @click="Cancel()">取 消</el-button>
-            <el-button type="primary" @click="AddInfo()">确 定</el-button>
+            <el-button @click="Cancel()" style="font-size: 18px" >取 消</el-button>
+            <el-button type="primary" @click="AddInfo()" style="font-size: 18px">确 定</el-button>
           </span>
         </el-dialog>
         <el-dialog
@@ -83,14 +83,14 @@
           :before-close="handleClose"
         >
           <el-row style="margin-top: 15px">
-            <el-tag type="info">标题</el-tag>
+            <el-tag type="info" style="font-size: 18px">标题</el-tag>
             <el-input
               v-model="editInfo.title"
               style="width: 200px; margin-left: 20px"
             ></el-input>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">类型</el-tag>
+            <el-tag type="info" style="font-size: 18px">类型</el-tag>
             <el-select
               v-model="editInfo.type"
               :placeholder="editInfo.type"
@@ -106,14 +106,14 @@
             </el-select>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">内容</el-tag>
+            <el-tag type="info" style="font-size: 18px">内容</el-tag>
           </el-row>
           <el-row style="margin-top: 15px">
             <QuillEditor v-model="editInfo.content"></QuillEditor>
           </el-row>
           <span slot="footer" class="dialog-footer">
-            <el-button @click="Cancel()">取 消</el-button>
-            <el-button type="primary" @click="EditInfo()">确 定</el-button>
+            <el-button @click="Cancel()" style="font-size: 18px">取 消</el-button>
+            <el-button type="primary" @click="EditInfo()" style="font-size: 18px">确 定</el-button>
           </span>
         </el-dialog>
         <el-dialog
@@ -139,7 +139,7 @@
         >
           <el-table-column prop="title" label="标题" width="150">
           </el-table-column>
-          <el-table-column prop="image" label="主图" width="400">
+          <el-table-column prop="image" label="主图" width="200">
             <template slot-scope="scope">
               <img :src="GetImangePath(scope.row.id)" style="width: 50px" />
             </template>
@@ -168,7 +168,7 @@
           :page-size="pagesize"
           background
           layout="prev, pager, next"
-          :total="1000"
+          :total="pagetotal"
         >
         </el-pagination>
       </el-main>
@@ -181,6 +181,7 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      pagetotal:1000,
       imageUrl: "",
       currentPage: 1,
       pagesize: 10,
@@ -252,6 +253,7 @@ export default {
             );
           }
           this.info_list_vis = this.info_list;
+          this.pagetotal = this.info_list_vis.length
         }
       })
       .catch((err) => {});
@@ -388,6 +390,7 @@ export default {
     search() {
       if (this.searchPlhText == "") {
         this.info_list_vis = this.info_list;
+        this.pagetotal = this.info_list_vis.length
       } else {
         //获取到查询的值，并使用toLowerCase():把字符串转换成小写，让模糊查询更加清晰
         let _search = this.searchPlhText.toLowerCase();
@@ -403,6 +406,7 @@ export default {
         }
         //查询后的表格 赋值过滤后的数据
         this.info_list_vis = newListData;
+        this.pagetotal = this.info_list_vis.length
       }
     },
     handleSizeChange: function (size) {

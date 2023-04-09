@@ -32,21 +32,28 @@
           :before-close="handleClose"
         >
           <el-row style="margin-top: 15px">
-            <el-tag type="info">标题</el-tag>
+            <el-tag type="info" style="font-size: 18px">标题</el-tag>
             <el-input
               v-model="notice.title"
               style="width: 200px; margin-left: 20px"
             ></el-input>
-          </el-row >
+          </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">内容</el-tag>
+            <el-tag type="info" style="font-size: 18px">内容</el-tag>
           </el-row>
           <el-row style="margin-top: 15px">
             <QuillEditor v-model="notice.content"></QuillEditor>
           </el-row>
           <span slot="footer" class="dialog-footer">
-            <el-button @click="Cancel()">取 消</el-button>
-            <el-button type="primary" @click="AddNotice()">确 定</el-button>
+            <el-button @click="Cancel()" style="font-size: 18px"
+              >取 消</el-button
+            >
+            <el-button
+              type="primary"
+              @click="AddNotice()"
+              style="font-size: 18px"
+              >确 定</el-button
+            >
           </span>
         </el-dialog>
         <el-dialog
@@ -56,21 +63,28 @@
           :before-close="handleClose"
         >
           <el-row style="margin-top: 15px">
-            <el-tag type="info">标题</el-tag>
+            <el-tag type="info" style="font-size: 18px">标题</el-tag>
             <el-input
               v-model="editNotice.title"
               style="width: 200px; margin-left: 20px"
             ></el-input>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">内容</el-tag>
+            <el-tag type="info" style="font-size: 18px">内容</el-tag>
           </el-row>
           <el-row style="margin-top: 15px">
             <QuillEditor v-model="editNotice.content"></QuillEditor>
           </el-row>
           <span slot="footer" class="dialog-footer">
-            <el-button @click="Cancel()">取 消</el-button>
-            <el-button type="primary" @click="EditNotice()">确 定</el-button>
+            <el-button @click="Cancel()" style="font-size: 18px"
+              >取 消</el-button
+            >
+            <el-button
+              type="primary"
+              @click="EditNotice()"
+              style="font-size: 18px"
+              >确 定</el-button
+            >
           </span>
         </el-dialog>
         <el-dialog
@@ -118,7 +132,7 @@
           :page-size="pagesize"
           background
           layout="prev, pager, next"
-          :total="1000"
+          :total="pagetotal"
         >
         </el-pagination>
       </el-main>
@@ -131,6 +145,7 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      pagetotal: 1000,
       currentPage: 1,
       pagesize: 10,
       notice_list_vis: [],
@@ -178,6 +193,7 @@ export default {
             ].create_time.slice(0, 10);
           }
           this.notice_list_vis = this.notice_list;
+          this.pagetotal = this.notice_list_vis.length;
         }
       })
       .catch((err) => {});
@@ -313,6 +329,7 @@ export default {
     search() {
       if (this.searchPlhText == "") {
         this.notice_list_vis = this.notice_list;
+        this.pagetotal = this.notice_list_vis.length;
       } else {
         //获取到查询的值，并使用toLowerCase():把字符串转换成小写，让模糊查询更加清晰
         let _search = this.searchPlhText.toLowerCase();
@@ -328,6 +345,7 @@ export default {
         }
         //查询后的表格 赋值过滤后的数据
         this.notice_list_vis = newListData;
+        this.pagetotal = this.notice_list_vis.length;
       }
     },
     handleSizeChange: function (size) {

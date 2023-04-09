@@ -43,7 +43,7 @@
         >
           <el-table-column prop="title" label="标题" width="150">
           </el-table-column>
-          <el-table-column prop="image" label="主图" width="400">
+          <el-table-column prop="image" label="主图" width="150">
             <template slot-scope="scope">
               <img :src="GetImangePath(scope.row.id)" style="width: 50px" />
             </template>
@@ -71,7 +71,7 @@
           :page-size="pagesize"
           background
           layout="prev, pager, next"
-          :total="1000"
+          :total="pagetotal"
         >
         </el-pagination>
       </el-main>
@@ -84,6 +84,7 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      pagetotal: 1000,
       imageUrl: "",
       currentPage: 1,
       pagesize: 10,
@@ -125,6 +126,7 @@ export default {
             );
           }
           this.post_list_vis = this.post_list;
+          this.pagetotal = this.post_list_vis.length;
         }
       })
       .catch((err) => {});
@@ -175,6 +177,7 @@ export default {
     search() {
       if (this.searchPlhText == "") {
         this.post_list_vis = this.post_list;
+        this.pagetotal = this.post_list_vis.length;
       } else {
         //获取到查询的值，并使用toLowerCase():把字符串转换成小写，让模糊查询更加清晰
         let _search = this.searchPlhText.toLowerCase();
@@ -194,6 +197,7 @@ export default {
         }
         //查询后的表格 赋值过滤后的数据
         this.post_list_vis = newListData;
+        this.pagetotal = this.post_list_vis.length;
       }
     },
     handleSizeChange: function (size) {

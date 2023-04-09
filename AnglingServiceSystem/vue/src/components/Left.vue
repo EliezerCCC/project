@@ -8,16 +8,33 @@
       background-color="#545c64"
       text-color="#fff"
     >
-      <el-menu-item index="1" @click="ToNoticeManager()">公告管理</el-menu-item>
-      <el-menu-item index="2" @click="ToInfoManager()">资讯管理</el-menu-item>
-      <el-menu-item index="3" @click="ToShopManager()">商品管理</el-menu-item>
-      <el-menu-item index="4" @click="ToSiteManager()">钓场管理</el-menu-item>
-      <el-menu-item index="5" @click="ToRecommendManager()"
+      <el-menu-item index="1" @click="ToNoticeManager()" style="font-size: 22px"
+        >公告管理</el-menu-item
+      >
+      <el-menu-item index="2" @click="ToInfoManager()" style="font-size: 22px"
+        >资讯管理</el-menu-item
+      >
+      <el-menu-item index="3" @click="ToShopManager()" style="font-size: 22px"
+        >商品管理</el-menu-item
+      >
+      <el-menu-item index="4" @click="ToSiteManager()" style="font-size: 22px"
+        >钓场管理</el-menu-item
+      >
+      <el-menu-item
+        index="5"
+        @click="ToRecommendManager()"
+        style="font-size: 22px"
         >推荐管理</el-menu-item
       >
-      <el-menu-item index="6" @click="ToForumManager()">论坛管理</el-menu-item>
-      <el-menu-item index="7" @click="ToPersonManager()">用户管理</el-menu-item>
-      <el-menu-item index="8" @click="ToOrderManager()">订单管理</el-menu-item>
+      <el-menu-item index="6" @click="ToForumManager()" style="font-size: 22px"
+        >论坛管理</el-menu-item
+      >
+      <el-menu-item index="7" @click="ToPersonManager()" style="font-size: 22px"
+        >用户管理</el-menu-item
+      >
+      <el-menu-item index="8" @click="ToOrderManager()" style="font-size: 22px"
+        >订单管理</el-menu-item
+      >
     </el-menu>
   </div>
 </template>

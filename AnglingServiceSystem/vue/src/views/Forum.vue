@@ -81,7 +81,7 @@
             :page-size="pagesize"
             background
             layout="prev, pager, next"
-            :total="1000"
+            :total="pagetotal"
           >
           </el-pagination
         ></el-row>
@@ -93,7 +93,7 @@
           :before-close="handleClose"
         >
           <el-row style="margin-top: 15px">
-            <el-tag type="info">标题</el-tag>
+            <el-tag type="info" style="font-size: 20px">标题</el-tag>
             <el-input
               v-model="post.title"
               style="width: 200px; margin-left: 20px"
@@ -101,7 +101,7 @@
           </el-row>
           <el-row style="margin-top: 15px"> </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">主图</el-tag>
+            <el-tag type="info" style="font-size: 20px">主图</el-tag>
             <el-upload
               class="avatar-uploader"
               :action="AudioAndVideoPath()"
@@ -115,14 +115,18 @@
             </el-upload>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">内容</el-tag>
+            <el-tag type="info" style="font-size: 20px">内容</el-tag>
           </el-row>
           <el-row style="margin-top: 15px">
             <QuillEditor v-model="post.content"></QuillEditor>
           </el-row>
           <span slot="footer" class="dialog-footer">
-            <el-button @click="Cancel()">取 消</el-button>
-            <el-button type="primary" @click="AddPost()">确 定</el-button>
+            <el-button @click="Cancel()" style="font-size: 20px"
+              >取 消</el-button
+            >
+            <el-button type="primary" @click="AddPost()" style="font-size: 20px"
+              >确 定</el-button
+            >
           </span>
         </el-dialog>
 
@@ -183,6 +187,7 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      pagetotal: 1000,
       MyPostVisible: false,
       currentPage: 1,
       pagesize: 16,
@@ -233,6 +238,7 @@ export default {
             }
           }
           this.post_list_vis = this.post_list;
+          this.pagetotal = this.post_list_vis.length;
         }
       })
       .catch((err) => {});
@@ -314,6 +320,7 @@ export default {
     search() {
       if (this.searchPlhText == "") {
         this.post_list_vis = this.post_list;
+        this.pagetotal = this.post_list_vis.length;
       } else {
         //获取到查询的值，并使用toLowerCase():把字符串转换成小写，让模糊查询更加清晰
         let _search = this.searchPlhText.toLowerCase();
@@ -332,6 +339,7 @@ export default {
         }
         //查询后的表格 赋值过滤后的数据
         this.post_list_vis = newListData;
+        this.pagetotal = this.post_list_vis.length;
       }
     },
     handleSizeChange: function (size) {

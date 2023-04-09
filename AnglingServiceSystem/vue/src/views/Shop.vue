@@ -11,28 +11,52 @@
           background-color="#545c64"
           text-color="#fff"
         >
-          <el-menu-item index="1" @click="searchType('')"
+          <el-menu-item
+            index="1"
+            @click="searchType('')"
+            style="font-size: 20px"
             >全部商品</el-menu-item
           >
-          <el-menu-item index="2" @click="searchType('钓竿')"
+          <el-menu-item
+            index="2"
+            @click="searchType('钓竿')"
+            style="font-size: 20px"
             >钓竿</el-menu-item
           >
-          <el-menu-item index="3" @click="searchType('鱼钩')"
+          <el-menu-item
+            index="3"
+            @click="searchType('鱼钩')"
+            style="font-size: 20px"
             >鱼钩</el-menu-item
           >
-          <el-menu-item index="4" @click="searchType('鱼饵')"
+          <el-menu-item
+            index="4"
+            @click="searchType('鱼饵')"
+            style="font-size: 20px"
             >鱼饵</el-menu-item
           >
-          <el-menu-item index="4" @click="searchType('鱼线')"
+          <el-menu-item
+            index="4"
+            @click="searchType('鱼线')"
+            style="font-size: 20px"
             >鱼线</el-menu-item
           >
-          <el-menu-item index="5" @click="searchType('鱼漂')"
+          <el-menu-item
+            index="5"
+            @click="searchType('鱼漂')"
+            style="font-size: 20px"
             >鱼漂</el-menu-item
           >
-          <el-menu-item index="6" @click="searchType('配件')"
+          <el-menu-item
+            index="6"
+            @click="searchType('配件')"
+            style="font-size: 20px"
             >配件</el-menu-item
           >
-          <el-menu-item index="7" @click="searchType('其他')"
+          <el-menu-item
+            index="7"
+            @click="searchType('其他')"
+            style="font-size: 20px"
             >其他</el-menu-item
           >
         </el-menu>
@@ -121,7 +145,7 @@
             :page-size="pagesize"
             background
             layout="prev, pager, next"
-            :total="1000"
+            :total="pagetotal"
           >
           </el-pagination
         ></el-row>
@@ -139,25 +163,25 @@
             />
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">名称</el-tag>
-            <el-tag style="margin-left: 20px">{{
+            <el-tag type="info" style="font-size: 20px">名称</el-tag>
+            <el-tag style="margin-left: 20px; font-size: 20px">{{
               detailedCommodity.name
             }}</el-tag>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">价格</el-tag>
-            <el-tag style="margin-left: 20px"
+            <el-tag type="info" style="font-size: 20px">价格</el-tag>
+            <el-tag style="margin-left: 20px; font-size: 20px"
               >{{ detailedCommodity.price }}元</el-tag
             >
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">数量</el-tag>
-            <el-tag style="margin-left: 20px">{{
+            <el-tag type="info" style="font-size: 20px">数量</el-tag>
+            <el-tag style="margin-left: 20px; font-size: 20px">{{
               detailedCommodity.amount
             }}</el-tag>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">简介</el-tag>
+            <el-tag type="info" style="font-size: 20px">简介</el-tag>
           </el-row>
           <el-row style="margin-top: 15px">
             <p
@@ -168,11 +192,14 @@
             </p>
           </el-row>
           <span slot="footer" class="dialog-footer">
-            <el-button @click="Cancel()">取 消</el-button>
+            <el-button @click="Cancel()" style="font-size: 20px"
+              >取 消</el-button
+            >
             <el-button
               v-if="detailedCommodity.amount > 0"
               type="primary"
               @click="BuyVis()"
+              style="font-size: 20px"
               >购买</el-button
             >
           </span>
@@ -356,6 +383,7 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      pagetotal: 1000,
       optionsAddress: [],
       CodeToText,
       nameAddress: "",
@@ -433,6 +461,7 @@ export default {
 
           this.commodity_list = newListData;
           this.commodity_list_vis = this.commodity_list;
+          this.pagetotal = this.commodity_list_vis.length;
         }
       })
       .catch((err) => {});
@@ -660,6 +689,7 @@ export default {
     search() {
       if (this.searchPlhText == "") {
         this.commodity_list_vis = this.commodity_list;
+        this.pagetotal = this.commodity_list_vis.length;
       } else {
         //获取到查询的值，并使用toLowerCase():把字符串转换成小写，让模糊查询更加清晰
         let _search = this.searchPlhText.toLowerCase();
@@ -675,11 +705,13 @@ export default {
         }
         //查询后的表格 赋值过滤后的数据
         this.commodity_list_vis = newListData;
+        this.pagetotal = this.commodity_list_vis.length;
       }
     },
     searchType(row) {
       if (row == "") {
         this.commodity_list_vis = this.commodity_list;
+        this.pagetotal = this.commodity_list_vis.length;
       } else {
         //获取到查询的值，并使用toLowerCase():把字符串转换成小写，让模糊查询更加清晰
         let _search = row.toLowerCase();
@@ -696,6 +728,7 @@ export default {
         //查询后的表格 赋值过滤后的数据
 
         this.commodity_list_vis = newListData;
+        this.pagetotal = this.commodity_list_vis.length;
       }
     },
     GetImangePath: function (id) {

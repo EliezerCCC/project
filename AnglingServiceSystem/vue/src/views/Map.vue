@@ -2,6 +2,9 @@
   <div class="map">
     <HeaderTop></HeaderTop>
     <h1 class="header" style="width: 300px; margin: 0 auto">鱼类分布信息</h1>
+    <el-button style="font-size: 20px; margin-left: 1300px" @click="toT()"
+      >切换</el-button
+    >
     <div id="main" class="charts"></div>
   </div>
 </template>
@@ -173,6 +176,9 @@ export default {
     this.drawLine();
   },
   methods: {
+    toT() {
+      this.$router.push("/sitemap");
+    },
     drawLine() {
       let myChart = echarts.init(document.getElementById("main"));
       let uploadDataUrl = dataJson;

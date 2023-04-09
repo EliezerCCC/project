@@ -32,21 +32,21 @@
           :before-close="handleClose"
         >
           <el-row style="margin-top: 15px">
-            <el-tag type="info">钓场名</el-tag>
+            <el-tag type="info" style="font-size: 20px">钓场名</el-tag>
             <el-input
               v-model="anglingSite.name"
               style="width: 200px; margin-left: 20px"
             ></el-input>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">地址</el-tag>
+            <el-tag type="info" style="font-size: 20px">地址</el-tag>
             <el-input
               v-model="anglingSite.address"
               style="width: 500px; margin-left: 20px"
             ></el-input>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">主图</el-tag>
+            <el-tag type="info" style="font-size: 20px">主图</el-tag>
             <el-upload
               class="avatar-uploader"
               :action="AudioAndVideoPath()"
@@ -60,14 +60,19 @@
             </el-upload>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">简介</el-tag>
+            <el-tag type="info" style="font-size: 20px">简介</el-tag>
           </el-row>
           <el-row style="margin-top: 15px">
             <QuillEditor v-model="anglingSite.introduction"></QuillEditor>
           </el-row>
           <span slot="footer" class="dialog-footer">
-            <el-button @click="Cancel()">取 消</el-button>
-            <el-button type="primary" @click="AddAnglingSite()"
+            <el-button @click="Cancel()" style="font-size: 20px"
+              >取 消</el-button
+            >
+            <el-button
+              type="primary"
+              @click="AddAnglingSite()"
+              style="font-size: 20px"
               >确 定</el-button
             >
           </span>
@@ -79,28 +84,33 @@
           :before-close="handleClose"
         >
           <el-row style="margin-top: 15px">
-            <el-tag type="info">钓场名</el-tag>
+            <el-tag type="info" style="font-size: 20px">钓场名</el-tag>
             <el-input
               v-model="editAnglingSite.name"
-              style="width: 200px; margin-left: 20px"
+              style="width: 200px; margin-left: 20px; font-size: 20px"
             ></el-input>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">地址</el-tag>
+            <el-tag type="info" style="font-size: 20px">地址</el-tag>
             <el-input
               v-model="editAnglingSite.address"
-              style="width: 500px; margin-left: 20px"
+              style="width: 500px; margin-left: 20px; font-size: 20px"
             ></el-input>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">简介</el-tag>
+            <el-tag type="info" style="font-size: 20px">简介</el-tag>
           </el-row>
           <el-row style="margin-top: 15px">
             <QuillEditor v-model="editAnglingSite.introduction"></QuillEditor>
           </el-row>
           <span slot="footer" class="dialog-footer">
-            <el-button @click="Cancel()">取 消</el-button>
-            <el-button type="primary" @click="EditAnglingSite()"
+            <el-button @click="Cancel()" style="font-size: 20px"
+              >取 消</el-button
+            >
+            <el-button
+              type="primary"
+              @click="EditAnglingSite()"
+              style="font-size: 20px"
               >确 定</el-button
             >
           </span>
@@ -165,7 +175,7 @@
         >
           <el-table-column prop="name" label="名称" width="150">
           </el-table-column>
-          <el-table-column prop="image" label="主图" width="300">
+          <el-table-column prop="image" label="主图" width="150">
             <template slot-scope="scope">
               <img :src="GetImangePath(scope.row.id)" style="width: 50px" />
             </template>
@@ -196,7 +206,7 @@
           :page-size="pagesize"
           background
           layout="prev, pager, next"
-          :total="1000"
+          :total="pagetotal"
         >
         </el-pagination>
       </el-main>
@@ -209,6 +219,7 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      pagetotal: 1000,
       imageUrl: "",
       currentPage: 1,
       pagesize: 10,
@@ -267,6 +278,7 @@ export default {
             ].create_time.slice(0, 10);
           }
           this.anglingSite_list_vis = this.anglingSite_list;
+          this.pagetotal = this.anglingSite_list_vis.length;
         }
       })
       .catch((err) => {});
@@ -409,6 +421,7 @@ export default {
     search() {
       if (this.searchPlhText == "") {
         this.anglingSite_list_vis = this.anglingSite_list;
+        this.pagetotal = this.anglingSite_list_vis.length;
       } else {
         //获取到查询的值，并使用toLowerCase():把字符串转换成小写，让模糊查询更加清晰
         let _search = this.searchPlhText.toLowerCase();
@@ -427,6 +440,7 @@ export default {
         }
         //查询后的表格 赋值过滤后的数据
         this.anglingSite_list_vis = newListData;
+        this.pagetotal = this.anglingSite_list_vis.length;
       }
     },
     handleSizeChange: function (size) {

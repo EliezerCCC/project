@@ -32,21 +32,21 @@
           :before-close="handleClose"
         >
           <el-row style="margin-top: 15px">
-            <el-tag type="info">名称</el-tag>
+            <el-tag type="info" style="font-size: 20px">名称</el-tag>
             <el-input
               v-model="recommend.fish_name"
               style="width: 200px; margin-left: 20px"
             ></el-input>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">信息</el-tag>
+            <el-tag type="info" style="font-size: 20px">信息</el-tag>
             <el-input
               v-model="recommend.fish_info"
               style="width: 500px; margin-left: 20px"
             ></el-input>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">主图</el-tag>
+            <el-tag type="info" style="font-size: 20px">主图</el-tag>
             <el-upload
               class="avatar-uploader"
               :action="AudioAndVideoPath()"
@@ -60,14 +60,21 @@
             </el-upload>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">推荐内容</el-tag>
+            <el-tag type="info" style="font-size: 20px">推荐内容</el-tag>
           </el-row>
           <el-row style="margin-top: 15px">
             <QuillEditor v-model="recommend.recommend_info"></QuillEditor>
           </el-row>
           <span slot="footer" class="dialog-footer">
-            <el-button @click="Cancel()">取 消</el-button>
-            <el-button type="primary" @click="AddRecommend()">确 定</el-button>
+            <el-button @click="Cancel()" style="font-size: 20px"
+              >取 消</el-button
+            >
+            <el-button
+              type="primary"
+              @click="AddRecommend()"
+              style="font-size: 20px"
+              >确 定</el-button
+            >
           </span>
         </el-dialog>
         <el-dialog
@@ -77,28 +84,35 @@
           :before-close="handleClose"
         >
           <el-row style="margin-top: 15px">
-            <el-tag type="info">名称</el-tag>
+            <el-tag type="info" style="font-size: 20px">名称</el-tag>
             <el-input
               v-model="editRecommend.fish_name"
               style="width: 200px; margin-left: 20px"
             ></el-input>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">信息</el-tag>
+            <el-tag type="info" style="font-size: 20px">信息</el-tag>
             <el-input
               v-model="editRecommend.fish_info"
               style="width: 1000px; margin-left: 20px"
             ></el-input>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">推荐信息</el-tag>
+            <el-tag type="info" style="font-size: 20px">推荐信息</el-tag>
           </el-row>
           <el-row style="margin-top: 15px">
             <QuillEditor v-model="editRecommend.recommend_info"></QuillEditor>
           </el-row>
           <span slot="footer" class="dialog-footer">
-            <el-button @click="Cancel()">取 消</el-button>
-            <el-button type="primary" @click="EditRecommend()">确 定</el-button>
+            <el-button @click="Cancel()" style="font-size: 20px"
+              >取 消</el-button
+            >
+            <el-button
+              type="primary"
+              @click="EditRecommend()"
+              style="font-size: 20px"
+              >确 定</el-button
+            >
           </span>
         </el-dialog>
         <el-dialog
@@ -196,7 +210,7 @@
           :page-size="pagesize"
           background
           layout="prev, pager, next"
-          :total="1000"
+          :total="pagetotal"
         >
         </el-pagination>
       </el-main>
@@ -209,6 +223,7 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      pagetotal: 1000,
       imageUrl: "",
       currentPage: 1,
       pagesize: 10,
@@ -267,6 +282,7 @@ export default {
             ].create_time.slice(0, 10);
           }
           this.recommend_list_vis = this.recommend_list;
+          this.pagetotal = this.recommend_list_vis.length;
         }
       })
       .catch((err) => {});
@@ -411,6 +427,7 @@ export default {
     search() {
       if (this.searchPlhText == "") {
         this.recommend_list_vis = this.recommend_list;
+        this.pagetotal = this.recommend_list_vis.length;
       } else {
         //获取到查询的值，并使用toLowerCase():把字符串转换成小写，让模糊查询更加清晰
         let _search = this.searchPlhText.toLowerCase();
@@ -426,6 +443,7 @@ export default {
         }
         //查询后的表格 赋值过滤后的数据
         this.recommend_list_vis = newListData;
+        this.pagetotal = this.recommend_list_vis.length;
       }
     },
     handleSizeChange: function (size) {

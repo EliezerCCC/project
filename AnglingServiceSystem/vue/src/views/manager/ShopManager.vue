@@ -32,18 +32,18 @@
           :before-close="handleClose"
         >
           <el-row style="margin-top: 15px">
-            <el-tag type="info">商品名</el-tag>
+            <el-tag type="info" style="font-size: 20px">商品名</el-tag>
             <el-input
               v-model="commodity.name"
-              style="width: 200px; margin-left: 20px"
+              style="width: 200px; margin-left: 20px; font-size: 20px"
             ></el-input>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">类型</el-tag>
+            <el-tag type="info" style="font-size: 20px">类型</el-tag>
             <el-select
               v-model="commodity.type"
               placeholder="请选择"
-              style="margin-left: 20px"
+              style="margin-left: 20px; font-size: 20px"
             >
               <el-option
                 v-for="item in options"
@@ -55,23 +55,23 @@
             </el-select>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">价格</el-tag>
+            <el-tag type="info" style="font-size: 20px">价格</el-tag>
             <el-input
               type="number"
               v-model="commodity.price"
-              style="width: 200px; margin-left: 20px"
+              style="width: 200px; margin-left: 20px; font-size: 20px"
             ></el-input>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">数量</el-tag>
+            <el-tag type="info" style="font-size: 20px">数量</el-tag>
             <el-input
               type="number"
               v-model="commodity.amount"
-              style="width: 200px; margin-left: 20px"
+              style="width: 200px; margin-left: 20px; font-size: 20px"
             ></el-input>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">主图</el-tag>
+            <el-tag type="info" style="font-size: 20px">主图</el-tag>
             <el-upload
               class="avatar-uploader"
               :action="AudioAndVideoPath()"
@@ -85,14 +85,21 @@
             </el-upload>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">简介</el-tag>
+            <el-tag type="info" style="font-size: 20px">简介</el-tag>
           </el-row>
           <el-row style="margin-top: 15px">
             <QuillEditor v-model="commodity.introduction"></QuillEditor>
           </el-row>
           <span slot="footer" class="dialog-footer">
-            <el-button @click="Cancel()">取 消</el-button>
-            <el-button type="primary" @click="AddCommodity()">确 定</el-button>
+            <el-button @click="Cancel()" style="font-size: 20px"
+              >取 消</el-button
+            >
+            <el-button
+              type="primary"
+              @click="AddCommodity()"
+              style="font-size: 20px"
+              >确 定</el-button
+            >
           </span>
         </el-dialog>
         <el-dialog
@@ -102,34 +109,34 @@
           :before-close="handleClose"
         >
           <el-row style="margin-top: 15px">
-            <el-tag type="info">商品名</el-tag>
+            <el-tag type="info" style="font-size: 20px">商品名</el-tag>
             <el-input
               v-model="editCommodity.name"
-              style="width: 200px; margin-left: 20px"
+              style="width: 200px; margin-left: 20px; font-size: 20px"
             ></el-input>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">价格</el-tag>
+            <el-tag type="info" style="font-size: 20px">价格</el-tag>
             <el-input
               type="number"
               v-model="editCommodity.price"
-              style="width: 200px; margin-left: 20px"
+              style="width: 200px; margin-left: 20px; font-size: 20px"
             ></el-input>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">数量</el-tag>
+            <el-tag type="info" style="font-size: 20px">数量</el-tag>
             <el-input
               type="number"
               v-model="editCommodity.amount"
-              style="width: 200px; margin-left: 20px"
+              style="width: 200px; margin-left: 20px; font-size: 20px"
             ></el-input>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">类型</el-tag>
+            <el-tag type="info" style="font-size: 20px">类型</el-tag>
             <el-select
               v-model="editCommodity.type"
               :placeholder="editCommodity.type"
-              style="margin-left: 20px"
+              style="margin-left: 20px; font-size: 20px"
             >
               <el-option
                 v-for="item in options"
@@ -141,11 +148,11 @@
             </el-select>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">状态</el-tag>
+            <el-tag type="info" style="font-size: 20px">状态</el-tag>
             <el-select
               v-model="editCommodity.status"
               :placeholder="editCommodity.status"
-              style="margin-left: 20px"
+              style="margin-left: 20px; font-size: 20px"
             >
               <el-option
                 v-for="item in statusOptions"
@@ -157,14 +164,21 @@
             </el-select>
           </el-row>
           <el-row style="margin-top: 15px">
-            <el-tag type="info">简介</el-tag>
+            <el-tag type="info" style="font-size: 20px">简介</el-tag>
           </el-row>
           <el-row style="margin-top: 15px">
             <QuillEditor v-model="editCommodity.introduction"></QuillEditor>
           </el-row>
           <span slot="footer" class="dialog-footer">
-            <el-button @click="Cancel()">取 消</el-button>
-            <el-button type="primary" @click="EditCommodity()">确 定</el-button>
+            <el-button @click="Cancel()" style="font-size: 20px"
+              >取 消</el-button
+            >
+            <el-button
+              type="primary"
+              @click="EditCommodity()"
+              style="font-size: 20px"
+              >确 定</el-button
+            >
           </span>
         </el-dialog>
         <el-dialog
@@ -233,7 +247,7 @@
           </el-table-column>
           <el-table-column prop="price" label="价格" width="150">
           </el-table-column>
-          <el-table-column prop="image" label="主图" width="300">
+          <el-table-column prop="image" label="主图" width="150">
             <template slot-scope="scope">
               <img :src="GetImangePath(scope.row.id)" style="width: 50px" />
             </template>
@@ -268,7 +282,7 @@
           :page-size="pagesize"
           background
           layout="prev, pager, next"
-          :total="1000"
+          :total="pagetotal"
         >
         </el-pagination>
       </el-main>
@@ -281,6 +295,7 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      pagetotal: 1000,
       imageUrl: "",
       currentPage: 1,
       pagesize: 10,
@@ -388,6 +403,7 @@ export default {
             ].create_time.slice(0, 10);
           }
           this.commodity_list_vis = this.commodity_list;
+          this.pagetotal = this.commodity_list_vis.length;
         }
       })
       .catch((err) => {});
@@ -553,6 +569,7 @@ export default {
     search() {
       if (this.searchPlhText == "") {
         this.commodity_list_vis = this.commodity_list;
+        this.pagetotal = this.commodity_list_vis.length;
       } else {
         //获取到查询的值，并使用toLowerCase():把字符串转换成小写，让模糊查询更加清晰
         let _search = this.searchPlhText.toLowerCase();
@@ -568,6 +585,7 @@ export default {
         }
         //查询后的表格 赋值过滤后的数据
         this.commodity_list_vis = newListData;
+        this.pagetotal = this.commodity_list_vis.length;
       }
     },
     handleSizeChange: function (size) {

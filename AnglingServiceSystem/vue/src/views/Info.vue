@@ -11,22 +11,40 @@
           background-color="#545c64"
           text-color="#fff"
         >
-          <el-menu-item index="1" @click="searchType('')"
+          <el-menu-item
+            index="1"
+            @click="searchType('')"
+            style="font-size: 20px"
             >全部资讯</el-menu-item
           >
-          <el-menu-item index="2" @click="searchType('钓鱼新闻')"
+          <el-menu-item
+            index="2"
+            @click="searchType('钓鱼新闻')"
+            style="font-size: 20px"
             >钓鱼新闻</el-menu-item
           >
-          <el-menu-item index="3" @click="searchType('钓鱼技巧')"
+          <el-menu-item
+            index="3"
+            @click="searchType('钓鱼技巧')"
+            style="font-size: 20px"
             >钓鱼技巧</el-menu-item
           >
-          <el-menu-item index="4" @click="searchType('钓鱼比赛')"
+          <el-menu-item
+            index="4"
+            @click="searchType('钓鱼比赛')"
+            style="font-size: 20px"
             >钓鱼比赛</el-menu-item
           >
-          <el-menu-item index="4" @click="searchType('钓鱼菜谱')"
+          <el-menu-item
+            index="4"
+            @click="searchType('钓鱼菜谱')"
+            style="font-size: 20px"
             >钓鱼菜谱</el-menu-item
           >
-          <el-menu-item index="5" @click="personCollect()"
+          <el-menu-item
+            index="5"
+            @click="personCollect()"
+            style="font-size: 20px"
             >我的收藏</el-menu-item
           >
         </el-menu>
@@ -40,11 +58,11 @@
             style="width: 500px"
           >
           </el-input>
-          <el-button type="info" style="margin-left: 20px" @click="search()"
+          <el-button
+            type="info"
+            style="margin-left: 20px; font-size: 18px"
+            @click="search()"
             >搜索</el-button
-          >
-          <el-button type="info" style="margin-left: 20px" @click=""
-            >我的收藏</el-button
           >
         </el-row>
         <el-row>
@@ -102,7 +120,7 @@
             :page-size="pagesize"
             background
             layout="prev, pager, next"
-            :total="1000"
+            :total="pagetotal"
           >
           </el-pagination
         ></el-row>
@@ -114,6 +132,7 @@
 export default {
   data() {
     return {
+      pagetotal: 1000,
       currentPage: 1,
       pagesize: 12,
       searchPlhText: "",
@@ -148,6 +167,7 @@ export default {
             );
           }
           this.info_list_vis = this.info_list;
+          this.pagetotal = this.info_list_vis.length;
         }
       })
       .catch((err) => {});
@@ -195,6 +215,7 @@ export default {
     search() {
       if (this.searchPlhText == "") {
         this.info_list_vis = this.info_list;
+        this.pagetotal = this.info_list_vis.length;
       } else {
         //获取到查询的值，并使用toLowerCase():把字符串转换成小写，让模糊查询更加清晰
         let _search = this.searchPlhText.toLowerCase();
@@ -210,11 +231,13 @@ export default {
         }
         //查询后的表格 赋值过滤后的数据
         this.info_list_vis = newListData;
+        this.pagetotal = this.info_list_vis.length;
       }
     },
     searchType(row) {
       if (row == "") {
         this.info_list_vis = this.info_list;
+        this.pagetotal = this.info_list_vis.length;
       } else {
         //获取到查询的值，并使用toLowerCase():把字符串转换成小写，让模糊查询更加清晰
         let _search = row.toLowerCase();
@@ -231,6 +254,7 @@ export default {
         //查询后的表格 赋值过滤后的数据
 
         this.info_list_vis = newListData;
+        this.pagetotal = this.info_list_vis.length;
       }
     },
     handleSizeChange: function (size) {
