@@ -119,7 +119,7 @@
 export default {
   data() {
     return {
-      pagetotal:1000,
+      pagetotal: 1000,
       currentPage: 1,
       pagesize: 10,
       searchPlhText: "",
@@ -160,7 +160,7 @@ export default {
             ].create_time.slice(0, 10);
           }
           this.recommend_list_vis = this.recommend_list;
-          this.pagetotal = this.recommend_list_vis.length
+          this.pagetotal = this.recommend_list_vis.length;
         }
       })
       .catch((err) => {});
@@ -188,7 +188,7 @@ export default {
     search() {
       if (this.searchPlhText == "") {
         this.recommend_list_vis = this.recommend_list;
-        this.pagetotal = this.recommend_list_vis.length
+        this.pagetotal = this.recommend_list_vis.length;
       } else {
         //获取到查询的值，并使用toLowerCase():把字符串转换成小写，让模糊查询更加清晰
         let _search = this.searchPlhText.toLowerCase();
@@ -204,7 +204,7 @@ export default {
         }
         //查询后的表格 赋值过滤后的数据
         this.recommend_list_vis = newListData;
-        this.pagetotal = this.recommend_list_vis.length
+        this.pagetotal = this.recommend_list_vis.length;
       }
     },
     handleSizeChange: function (size) {
